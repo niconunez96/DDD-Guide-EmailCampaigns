@@ -6,7 +6,7 @@ class Campaign:
     name: str
     subject: str
 
-    def __init__(self, id, name, subject):
+    def __init__(self, id: UUID, name: str, subject: str):
         self.id = id
         self.name = name
         self.subject = subject
