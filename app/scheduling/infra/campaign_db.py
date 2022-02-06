@@ -12,9 +12,9 @@ def create_campaign_schema(metadata: MetaData) -> None:
         "campaigns",
         metadata,
         Column("id", UUIDType(binary=False), primary_key=True, default=uuid.uuid4),
-        Column("name", String(50)),
-        Column("subject", String(50)),
-        Column("body", String(50)),
-        Column("sender", String(50)),
+        Column("name", String(50), key="_name"),
+        Column("subject", String(50), key="_subject"),
+        Column("body", String(50), key="_body"),
+        Column("sender", String(50), key="_sender"),
     )
     mapper(Campaign, campaign_table)
