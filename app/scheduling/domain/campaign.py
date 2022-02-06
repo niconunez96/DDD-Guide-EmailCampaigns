@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from typing import TypedDict
 from uuid import UUID
 
+from app.shared.domain import DomainId
+
 
 class CampaignResponse(TypedDict):
     id: str
@@ -14,15 +16,12 @@ class CampaignResponse(TypedDict):
 
 
 @dataclass(frozen=True)
-class CampaignId:
-    _id: UUID
+class CampaignId(DomainId):
+    value: UUID
 
     @staticmethod
     def from_string(id: str) -> CampaignId:
         return CampaignId(UUID(id))
-
-    def __str__(self) -> str:
-        return str(self._id)
 
 
 class Campaign:

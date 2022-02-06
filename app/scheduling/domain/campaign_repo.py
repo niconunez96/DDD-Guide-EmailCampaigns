@@ -1,6 +1,6 @@
 from typing import Optional, Protocol
 
-from app.db import SessionFactory
+from app.shared.infra.db import SessionFactory
 from sqlalchemy.orm import scoped_session
 
 from .campaign import Campaign, CampaignId

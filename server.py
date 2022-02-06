@@ -1,6 +1,7 @@
 from flask import Flask
-from app.db import init_db
+
 from app.controller import dummy_endpoint
+from app.shared.infra.db import init_db
 from settings import init_logging
 
 app = Flask(__name__)
