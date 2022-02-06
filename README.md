@@ -3,6 +3,12 @@
 1. As a user I want to create my campaigns with: name, subject, body and sender
 2. As a user I want to schedule my campaigns to be sent out at a specified date
 3. As a user I want to know the status of my campaign
+    * Our product owner says that the status should be the following ones
+        * draft: When the user creates his campaign and do some updates
+        * draft -> scheduled: When the user specifiy a date to be sent
+        * draft -> sending: When the user tries to send immediately the campaign
+        * scheduled -> sending: When it is time to send the campaign
+        * sending -> sent: When the campaign is completely sent to all of its recipients
 4. As a user I want to create contact lists
 5. As a user I want to specify contact lists for a campaign
 6. As a user I want to know the delivery status of my recipients
