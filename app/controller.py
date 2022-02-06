@@ -12,10 +12,10 @@ from .scheduling.application.campaign_creator import (
 from .scheduling.application.campaign_finder import find_campaign
 from .scheduling.domain.campaign_repo import campaign_mysql_repo
 
-dummy_endpoint = Blueprint("dummy", __name__, url_prefix="/campaigns")
+campaign_endpoint = Blueprint("dummy", __name__, url_prefix="/campaigns")
 
 
-@dummy_endpoint.route("/<string:id>/", methods=["GET"])
+@campaign_endpoint.route("/<string:id>/", methods=["GET"])
 def find(id: str) -> tuple[Response, HTTPStatus]:
     campaign_id = CampaignId.from_string(id)
     campaign = find_campaign(campaign_mysql_repo, campaign_id)
@@ -24,7 +24,7 @@ def find(id: str) -> tuple[Response, HTTPStatus]:
     return jsonify({"data": campaign}), HTTPStatus.OK
 
 
-@dummy_endpoint.route("/", methods=["POST"])
+@campaign_endpoint.route("/", methods=["POST"])
 def create() -> tuple[Response, HTTPStatus]:
     id = uuid.uuid4()
     data = request.json
