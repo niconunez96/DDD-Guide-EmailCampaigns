@@ -2,7 +2,7 @@ from uuid import UUID
 from dataclasses import dataclass
 from logging import getLogger
 
-from ..domain.campaign import Campaign
+from ..domain.campaign import Campaign, CampaignId
 from ..domain.campaign_repo import CampaignRepo
 
 logger = getLogger(__name__)
@@ -21,7 +21,11 @@ def create_campaign(
     campaign_repo: CampaignRepo, command: CreateCampaignCommand
 ) -> None:
     campaign = Campaign(
-        command.id, command.name, command.subject, command.body, command.sender
+        CampaignId(command.id),
+        command.name,
+        command.subject,
+        command.body,
+        command.sender,
     )
     logger.info(campaign)
     campaign_repo.store(campaign)

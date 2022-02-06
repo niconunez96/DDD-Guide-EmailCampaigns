@@ -1,14 +1,17 @@
+from typing import NewType
 from uuid import UUID
+
+CampaignId = NewType("CampaignId", UUID)
 
 
 class Campaign:
-    id: UUID
+    id: CampaignId
     _name: str
     _subject: str
     _body: str
     _sender: str
 
-    def __init__(self, id: UUID, name: str, subject: str, body: str, sender: str):
+    def __init__(self, id: CampaignId, name: str, subject: str, body: str, sender: str):
         self.id = id
         self._name = name
         self._subject = subject
