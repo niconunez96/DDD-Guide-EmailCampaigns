@@ -2,11 +2,14 @@ import uuid
 from http import HTTPStatus
 
 from flask import Blueprint, Response, jsonify, request
+import json
 
 from app.scheduling.domain.campaign import CampaignId
 
-from .scheduling.application.campaign_creator import (CreateCampaignCommand,
-                                                      create_campaign)
+from .scheduling.application.campaign_creator import (
+    CreateCampaignCommand,
+    create_campaign,
+)
 from .scheduling.application.campaign_finder import find_campaign
 from .scheduling.domain.campaign_repo import campaign_mysql_repo
 
@@ -19,7 +22,7 @@ def find(id: str) -> tuple[Response, HTTPStatus]:
     campaign = find_campaign(campaign_mysql_repo, campaign_id)
     if not campaign:
         return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
-    return jsonify({"data": {"id": campaign.id, "name": campaign._name}}), HTTPStatus.OK
+    return jsonify({"data": json.dumps(campaign)}), HTTPStatus.OK
 
 
 @dummy_endpoint.route("/", methods=["POST"])

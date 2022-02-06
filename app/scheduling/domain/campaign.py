@@ -1,6 +1,16 @@
-from dataclasses import dataclass
-from uuid import UUID
 from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import TypedDict
+from uuid import UUID
+
+
+class CampaignResponse(TypedDict):
+    id: str
+    name: str
+    subject: str
+    body: str
+    sender: str
 
 
 @dataclass(frozen=True)
@@ -10,6 +20,9 @@ class CampaignId:
     @staticmethod
     def from_string(id: str) -> CampaignId:
         return CampaignId(UUID(id))
+
+    def __str__(self) -> str:
+        return str(self._id)
 
 
 class Campaign:
@@ -28,3 +41,12 @@ class Campaign:
 
     def __str__(self) -> str:
         return f"Campaign {self._name}"
+
+    def to_response(self) -> CampaignResponse:
+        return {
+            "id": str(self.id),
+            "name": self._name,
+            "subject": self._subject,
+            "body": self._body,
+            "sender": self._sender,
+        }
