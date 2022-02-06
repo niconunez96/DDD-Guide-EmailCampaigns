@@ -1,12 +1,12 @@
 # Bussiness rules
 
-1. As a user I want to create my campaigns with a subject and body
+1. As a user I want to create my campaigns with: name, subject, body and sender
 2. As a user I want to schedule my campaigns to be sent out at a specified date
-3. As a user I want to create contact lists
-4. As a user I want to specify contact lists for a campaign
-5. As a user I want to know the status of my campaign
-6. Users will have a daily send limit
-7. As a user I want to know the delivery status of my recipients
+3. As a user I want to know the status of my campaign
+4. As a user I want to create contact lists
+5. As a user I want to specify contact lists for a campaign
+6. As a user I want to know the delivery status of my recipients
+7. Users will have a daily send limit
 
 # DDD
 ## Domain modeling
