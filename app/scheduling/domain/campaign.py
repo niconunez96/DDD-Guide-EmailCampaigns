@@ -1,4 +1,8 @@
+from uuid import UUID
+
+
 class Campaign:
+    _id: UUID
     _name: str
     _subject: str
     _body: str
