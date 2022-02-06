@@ -17,11 +17,15 @@ class CampaignResponse(TypedDict):
 
 @dataclass(frozen=True)
 class CampaignId(DomainId):
-    value: UUID
+    _id: UUID
 
     @staticmethod
     def from_string(id: str) -> CampaignId:
         return CampaignId(UUID(id))
+
+    @property
+    def value(self) -> UUID:
+        return self._id
 
 
 class Campaign:
