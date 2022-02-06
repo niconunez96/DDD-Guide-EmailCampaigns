@@ -9,3 +9,6 @@ class Campaign:
         self._subject = subject
         self._body = body
         self._sender = sender
+
+    def __str__(self) -> str:
+        return f"Campaign {self._name}"
