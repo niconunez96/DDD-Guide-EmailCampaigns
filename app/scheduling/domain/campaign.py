@@ -1,7 +1,15 @@
-from typing import NewType
+from dataclasses import dataclass
 from uuid import UUID
+from __future__ import annotations
 
-CampaignId = NewType("CampaignId", UUID)
+
+@dataclass(frozen=True)
+class CampaignId:
+    _id: UUID
+
+    @staticmethod
+    def from_string(id: str) -> CampaignId:
+        return CampaignId(UUID(id))
 
 
 class Campaign:
