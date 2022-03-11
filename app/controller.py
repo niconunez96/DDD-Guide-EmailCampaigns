@@ -1,3 +1,5 @@
+from datetime import datetime
+from typing import Any, Optional
 import uuid
 from http import HTTPStatus
 
@@ -10,6 +12,10 @@ from .scheduling.application.campaign_creator import (
     create_campaign,
 )
 from .scheduling.application.campaign_finder import find_campaign
+from .scheduling.application.campaign_scheduler import (
+    ScheduleCommand,
+    schedule_campaign,
+)
 from .scheduling.domain.campaign_repo import campaign_mysql_repo
 
 campaign_endpoint = Blueprint("dummy", __name__, url_prefix="/campaigns")
@@ -22,6 +28,22 @@ def find(id: str) -> tuple[Response, HTTPStatus]:
     if not campaign:
         return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
     return jsonify({"data": campaign}), HTTPStatus.OK
+
+
+@campaign_endpoint.route("/<string:id>/schedule/", methods=["POST"])
+def schedule(id: str) -> tuple[Response, HTTPStatus]:
+    campaign_id = CampaignId.from_string(id)
+    data: Optional[dict[str, str]] = request.json
+    if not data:
+        return jsonify({"error": "MISSING_DATA"}), HTTPStatus.BAD_REQUEST
+    try:
+        schedule_campaign(
+            campaign_mysql_repo,
+            ScheduleCommand(campaign_id, datetime.strptime(data["schedule_datetime"], "%Y-%m-%d %H:%M")),
+        )
+    except:
+        return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
+    return jsonify({}), HTTPStatus.ACCEPTED
 
 
 @campaign_endpoint.route("/", methods=["POST"])

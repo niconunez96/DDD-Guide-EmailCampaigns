@@ -13,6 +13,9 @@ class CampaignRepo(Protocol):
     def find(self, id: CampaignId) -> Optional[Campaign]:
         raise NotImplementedError
 
+    def update(self, campaign: Campaign) -> None:
+        raise NotImplementedError
+
 
 class CampaignMySQLRepo:
     def store(self, campaign: Campaign) -> None:
@@ -27,5 +30,10 @@ class CampaignMySQLRepo:
         session.close()
         return campaign
 
+    def update(self, campaign: Campaign) -> None:
+        session = scoped_session(SessionFactory)
+        session.add(campaign)
+        session.commit()
+        session.close()
 
 campaign_mysql_repo = CampaignMySQLRepo()

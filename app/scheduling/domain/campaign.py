@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TypedDict
+from datetime import datetime
+from typing import Optional, TypedDict
 from uuid import UUID
 
 from app.shared.domain import DomainId
@@ -13,6 +14,7 @@ class CampaignResponse(TypedDict):
     subject: str
     body: str
     sender: str
+    schedule_datetime: str
 
 
 @dataclass(frozen=True)
@@ -34,6 +36,7 @@ class Campaign:
     _subject: str
     _body: str
     _sender: str
+    _schedule_datetime: Optional[datetime] = None
 
     def __init__(self, id: CampaignId, name: str, subject: str, body: str, sender: str):
         self.id = id
@@ -52,4 +55,5 @@ class Campaign:
             "subject": self._subject,
             "body": self._body,
             "sender": self._sender,
+            "schedule_datetime": self._schedule_datetime.isoformat() if self._schedule_datetime else "",
         }

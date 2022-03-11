@@ -1,5 +1,5 @@
 from app.shared.infra.sqlalchemy_types import DomainIdObjectType
-from sqlalchemy import Column, MetaData, String, Table
+from sqlalchemy import Column, MetaData, String, Table, DateTime
 from sqlalchemy.orm import mapper
 from sqlalchemy_utils import UUIDType
 
@@ -19,5 +19,6 @@ def create_campaign_schema(metadata: MetaData) -> None:
         Column("subject", String(50), key="_subject"),
         Column("body", String(50), key="_body"),
         Column("sender", String(50), key="_sender"),
+        Column("schedule_datetime", DateTime(), key="_schedule_datetime"),
     )
     mapper(Campaign, campaign_table)

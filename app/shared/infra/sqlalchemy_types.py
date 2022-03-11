@@ -9,6 +9,7 @@ from app.shared.domain import DomainId
 
 class DomainIdObjectType(TypeDecorator):
     impl = String
+    cache_ok = True
 
     def __init__(self, class_of_value_object: Type[DomainId], type: TypeEngine):
         self.class_of_value_object = class_of_value_object
