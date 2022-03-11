@@ -14,7 +14,7 @@ def schedule_campaign(campaign_repo: CampaignRepo, cmd: ScheduleCommand) -> None
     campaign = campaign_repo.find(cmd.id)
     if not campaign:
         raise Exception("Campaign does not exist")
-    campaign._schedule_datetime = cmd.schedule_datetime
+    campaign.mark_as_scheduled(cmd.schedule_datetime)
     campaign_repo.update(campaign)
 
 
@@ -24,16 +24,19 @@ def schedule_campaign(campaign_repo: CampaignRepo, cmd: ScheduleCommand) -> None
 # real intention of the use case, we only want to modify the schedule time explictly
 # in a particular use case
 
+
 @dataclass(frozen=True)
 class UpdateInfo:
     id: CampaignId
     schedule_datetime: datetime
     name: str
 
+
 def update_campaign(campaign_repo: CampaignRepo, info: UpdateInfo) -> None:
     campaign = campaign_repo.find(info.id)
     if not campaign:
         raise Exception("Campaign does not exist")
-    campaign._schedule_datetime = info.schedule_datetime or campaign._schedule_datetime
     campaign._name = info.name or campaign._name
+    if info.schedule_datetime:
+        campaign.mark_as_scheduled(info.schedule_datetime)
     campaign_repo.update(campaign)

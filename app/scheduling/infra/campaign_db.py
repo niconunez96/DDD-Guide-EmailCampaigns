@@ -20,5 +20,6 @@ def create_campaign_schema(metadata: MetaData) -> None:
         Column("body", String(50), key="_body"),
         Column("sender", String(50), key="_sender"),
         Column("schedule_datetime", DateTime(), key="_schedule_datetime"),
+        Column("status", String(10), key="_status"),
     )
     mapper(Campaign, campaign_table)
