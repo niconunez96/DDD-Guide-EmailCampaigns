@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, Optional
+from typing import Optional
 import uuid
 from http import HTTPStatus
 
@@ -24,6 +24,8 @@ campaign_endpoint = Blueprint("dummy", __name__, url_prefix="/campaigns")
 @campaign_endpoint.route("/<string:id>/", methods=["GET"])
 def find(id: str) -> tuple[Response, HTTPStatus]:
     campaign_id = CampaignId.from_string(id)
+    if not campaign_id:
+        return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
     campaign = find_campaign(campaign_mysql_repo, campaign_id)
     if not campaign:
         return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
@@ -33,6 +35,8 @@ def find(id: str) -> tuple[Response, HTTPStatus]:
 @campaign_endpoint.route("/<string:id>/schedule/", methods=["POST"])
 def schedule(id: str) -> tuple[Response, HTTPStatus]:
     campaign_id = CampaignId.from_string(id)
+    if not campaign_id:
+        return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
     data: Optional[dict[str, str]] = request.json
     if not data:
         return jsonify({"error": "MISSING_DATA"}), HTTPStatus.BAD_REQUEST

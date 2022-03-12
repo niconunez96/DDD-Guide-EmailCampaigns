@@ -27,12 +27,8 @@ class CampaignResponse(TypedDict):
 
 
 @dataclass(frozen=True)
-class CampaignId(DomainId):
+class CampaignId(DomainId["CampaignId"]):
     _id: UUID
-
-    @staticmethod
-    def from_string(id: str) -> CampaignId:
-        return CampaignId(UUID(id))
 
     @property
     def value(self) -> UUID:
