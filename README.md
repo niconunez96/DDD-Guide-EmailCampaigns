@@ -35,7 +35,10 @@ The aggregate root is the "gateway" of a specific aggregate, this object is the 
 ### Services
 Better described by Eric Evans
 ```
-When a significant process or transformation in the domain is not a natural responsibility of an ENTITY or VALUE OBJECT, add an operation to the model as standalone interface declared as a SERVICE. Define the interface in terms of the language of the model and make sure the operation name is part of the UBIQUITOUS LANGUAGE. Make the SERVICE stateless.
+When a significant process or transformation in the domain is not a natural responsibility of an ENTITY or VALUE OBJECT, 
+add an operation to the model as standalone interface declared as a SERVICE.
+Define the interface in terms of the language of the model and make sure the operation name is part
+of the UBIQUITOUS LANGUAGE. Make the SERVICE stateless.
 Eric evans. DDD
 ```
 ### Repositories
