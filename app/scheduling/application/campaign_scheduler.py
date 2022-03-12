@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional
 from app.scheduling.domain.campaign import CampaignId
-from app.scheduling.domain.campaign_repo import CampaignRepo
+from app.scheduling.domain.campaign_repo import CampaignRepo, campaign_mysql_repo
 
 
 @dataclass(frozen=True)
@@ -10,7 +11,10 @@ class ScheduleCommand:
     schedule_datetime: datetime
 
 
-def schedule_campaign(campaign_repo: CampaignRepo, cmd: ScheduleCommand) -> None:
+def schedule_campaign(
+    cmd: ScheduleCommand, campaign_repo: Optional[CampaignRepo] = None
+) -> None:
+    campaign_repo = campaign_repo or campaign_mysql_repo
     campaign = campaign_repo.find(cmd.id)
     if not campaign:
         raise Exception("Campaign does not exist")
@@ -32,7 +36,10 @@ class UpdateInfo:
     name: str
 
 
-def update_campaign(campaign_repo: CampaignRepo, info: UpdateInfo) -> None:
+def update_campaign(
+    info: UpdateInfo, campaign_repo: Optional[CampaignRepo] = None
+) -> None:
+    campaign_repo = campaign_repo or campaign_mysql_repo
     campaign = campaign_repo.find(info.id)
     if not campaign:
         raise Exception("Campaign does not exist")

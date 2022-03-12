@@ -57,7 +57,6 @@ def create() -> tuple[Response, HTTPStatus]:
     if not data:
         return jsonify({"error": "MISSING_DATA"}), HTTPStatus.BAD_REQUEST
     create_campaign(
-        campaign_mysql_repo,
         CreateCampaignCommand(
             id, data["name"], data["subject"], data["body"], data["sender"]
         ),
