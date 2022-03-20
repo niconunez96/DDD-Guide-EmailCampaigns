@@ -1,11 +1,12 @@
 from app.shared.infra.sqlalchemy_types import DomainIdObjectType
-from sqlalchemy import Column, MetaData, String, Table, DateTime
-from sqlalchemy.orm import mapper
+from sqlalchemy import Column, MetaData, String, Table, DateTime, ForeignKey
+from sqlalchemy.orm import registry
 from sqlalchemy_utils import UUIDType
 
 from ..domain.campaign import Campaign, CampaignId
 
 
+mapper_registry = registry()
 def create_campaign_schema(metadata: MetaData) -> None:
     campaign_table = Table(
         "campaigns",
@@ -22,4 +23,4 @@ def create_campaign_schema(metadata: MetaData) -> None:
         Column("schedule_datetime", DateTime(), key="_schedule_datetime"),
         Column("status", String(10), key="_status"),
     )
-    mapper(Campaign, campaign_table)
+    mapper_registry.map_imperatively(Campaign, campaign_table)
