@@ -1,14 +1,14 @@
 from flask import Flask
 from dotenv import load_dotenv
 
-from app.controller import campaign_endpoint, sengrid_endpoint
+from app.controller import endpoints
 from app.shared.infra.db import init_db
 from settings import init_logging
 
 load_dotenv()
 app = Flask(__name__)
-app.register_blueprint(campaign_endpoint)
-app.register_blueprint(sengrid_endpoint)
+for endpoint in endpoints:
+    app.register_blueprint(endpoint)
 
 
 init_db()

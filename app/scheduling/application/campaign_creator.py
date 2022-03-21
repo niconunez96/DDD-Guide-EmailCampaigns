@@ -20,9 +20,8 @@ class CreateCampaignCommand:
 
 def create_campaign(
     command: CreateCampaignCommand,
-    campaign_repo: Optional[CampaignRepo] = None,
+    campaign_repo: CampaignRepo = campaign_mysql_repo,
 ) -> None:
-    campaign_repo = campaign_repo or campaign_mysql_repo
     campaign = Campaign(
         CampaignId(command.id),
         command.name,
@@ -32,4 +31,3 @@ def create_campaign(
     )
     logger.info(campaign)
     campaign_repo.store(campaign)
-    return

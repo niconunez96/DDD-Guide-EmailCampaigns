@@ -22,13 +22,13 @@ T = TypeVar("T")
 ID = TypeVar("ID")
 
 class MySQLRepo(Generic[T, ID], ABC):
-    def save(self, entity: T) -> None:
+    def _save(self, entity: T) -> None:
         session = scoped_session(SessionFactory)
         session.add(entity)
         session.commit()
         session.close()
 
-    def find_by_id(self, id: ID) -> Optional[T]:
+    def _find_by_id(self, id: ID) -> Optional[T]:
         session = scoped_session(SessionFactory)
         entity: Optional[T] = session.query(self._clz).filter_by(id=id).first()
         session.close()

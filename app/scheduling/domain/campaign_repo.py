@@ -18,13 +18,13 @@ class CampaignRepo(Protocol):
 
 class CampaignMySQLRepo(MySQLRepo[Campaign, CampaignId]):
     def store(self, campaign: Campaign) -> None:
-        super().save(campaign)
+        super()._save(campaign)
 
     def find(self, id: CampaignId) -> Optional[Campaign]:
-        return super().find_by_id(id)
+        return super()._find_by_id(id)
 
     def update(self, campaign: Campaign) -> None:
-        super().save(campaign)
+        super()._save(campaign)
 
     def _clz(self) -> Type[Campaign]:
         return Campaign

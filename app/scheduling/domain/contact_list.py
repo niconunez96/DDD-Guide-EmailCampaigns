@@ -30,7 +30,7 @@ class ContactList:
     _contacts: list[Contact]
 
     def __init__(
-        self, id: ContactListId, user_id: str, name: str, contacts: list[Contact]
+        self, id: ContactListId, user_id: str, name: str, contacts: list[Contact] = None
     ):
         self.id = id
         self._user_id = user_id
