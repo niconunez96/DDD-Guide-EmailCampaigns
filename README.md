@@ -64,8 +64,7 @@ class CampaignRepo(Protocol):
 ```python
 def create_campaign(
     command: CreateCampaignCommand,
-    campaign_repo: Optional[CampaignRepo] = None,
+    campaign_repo: Optional[CampaignRepo] = campaign_mysql_repo,
 ) -> None:
-    campaign_repo = campaign_repo or campaign_mysql_repo
     ...
 ```
