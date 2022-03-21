@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 from uuid import uuid4
 from flask import Response, jsonify, request
 from http import HTTPStatus
@@ -16,10 +16,12 @@ contact_list_endpoint = Blueprint(
 
 @contact_list_endpoint.route("/", methods=["POST"])
 def create() -> tuple[Response, HTTPStatus]:
-    data: Optional[dict[str, str]] = request.json
+    data: Optional[dict[str, Any]] = request.json
     if not data:
         return jsonify({"error": "MISSING DATA"}), HTTPStatus.BAD_REQUEST
     id = ContactListId(uuid4())
-    cmd = CreateContactListCommand(id, data["name"], data["user_id"])
+    cmd = CreateContactListCommand(
+        id, data["name"], data["user_id"], data.get("contacts", [])
+    )
     create_contact_list(cmd)
     return jsonify({"data": {"id": str(id)}}), HTTPStatus.ACCEPTED
