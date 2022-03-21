@@ -1,1 +1,2 @@
 from .contact_list_creator import create_contact_list, CreateContactListCommand
+from .contacts_finder import find_contact_lists

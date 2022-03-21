@@ -1,10 +1,16 @@
 from dataclasses import dataclass
-from typing import Literal
+from typing import Literal, TypedDict
 from uuid import UUID
 from app.shared.domain import DomainId
 
 
 ContactStatus = Literal["BOUNCED", "DELIVERABLE"]
+
+
+class ContactResponse(TypedDict):
+    id: int
+    email: str
+    status: str
 
 
 class Contact:
@@ -17,6 +23,14 @@ class Contact:
         self._email = email
         self._status = status
         self._user_id = user_id
+
+    @property
+    def to_response(self) -> ContactResponse:
+        return {
+            "id": self.id,
+            "email": self._email,
+            "status": self._status,
+        }
 
 
 class ContactListId(DomainId["ContactListId"]):
@@ -36,3 +50,7 @@ class ContactList:
         self._user_id = user_id
         self._name = name
         self._contacts = contacts or []
+
+    @property
+    def contacts(self) -> list[ContactResponse]:
+        return [contact.to_response for contact in self._contacts]
