@@ -1,7 +1,6 @@
-from typing import Optional, Protocol
+from typing import Optional, Protocol, Type
 
-from app.shared.infra.db import SessionFactory
-from sqlalchemy.orm import scoped_session
+from app.shared.infra.db import MySQLRepo
 
 from .campaign import Campaign, CampaignId
 
@@ -17,23 +16,18 @@ class CampaignRepo(Protocol):
         raise NotImplementedError
 
 
-class CampaignMySQLRepo:
+class CampaignMySQLRepo(MySQLRepo[Campaign, CampaignId]):
     def store(self, campaign: Campaign) -> None:
-        session = scoped_session(SessionFactory)
-        session.add(campaign)
-        session.commit()
-        session.close()
+        super().save(campaign)
 
     def find(self, id: CampaignId) -> Optional[Campaign]:
-        session = scoped_session(SessionFactory)
-        campaign: Optional[Campaign] = session.query(Campaign).filter_by(id=id).first()
-        session.close()
-        return campaign
+        return super().find_by_id(id)
 
     def update(self, campaign: Campaign) -> None:
-        session = scoped_session(SessionFactory)
-        session.add(campaign)
-        session.commit()
-        session.close()
+        super().save(campaign)
+
+    def _clz(self) -> Type[Campaign]:
+        return Campaign
+
 
 campaign_mysql_repo = CampaignMySQLRepo()
