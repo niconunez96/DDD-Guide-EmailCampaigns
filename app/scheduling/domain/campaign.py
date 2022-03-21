@@ -26,14 +26,8 @@ class CampaignResponse(TypedDict):
     status: str
 
 
-@dataclass(frozen=True)
 class CampaignId(DomainId["CampaignId"]):
-    _id: UUID
-
-    @property
-    def value(self) -> UUID:
-        return self._id
-
+    pass
 
 class Campaign:
     id: CampaignId

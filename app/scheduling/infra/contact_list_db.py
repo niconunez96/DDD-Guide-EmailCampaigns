@@ -53,7 +53,7 @@ def create_contact_list_schema(metadata: MetaData) -> None:
         contact_list_table,
         properties={
             "_contacts": relationship(
-                "Contact", secondary=contact_list_X_contacts_table
+                "Contact", secondary=contact_list_X_contacts_table, lazy="raise"
             )
         },
     )
