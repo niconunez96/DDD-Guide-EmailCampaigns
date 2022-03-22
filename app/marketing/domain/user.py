@@ -23,10 +23,10 @@ class User:
 
     def upgrade_plan(self, to_plan: MarketingPlan) -> None:
         if self._plan.value > to_plan.value:
-            raise Exception("Cannot upgrade to a less plan")
+            raise Exception("CANNOT_UPGRADE")
         self._plan = to_plan
 
     def downgrade_plan(self, to_plan: MarketingPlan) -> None:
         if self._plan.value < to_plan.value:
-            raise Exception("Cannot downgrade to a greater plan")
+            raise Exception("CANNOT_DOWNGRADE")
         self._plan = to_plan
