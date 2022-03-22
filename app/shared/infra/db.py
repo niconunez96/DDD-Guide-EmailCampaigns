@@ -5,7 +5,8 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 from app.scheduling.infra.campaign_db import create_campaign_schema
 from app.scheduling.infra.contact_list_db import create_contact_list_schema
-from app.shared.domain import DomainId
+from app.marketing.infra.user_db import create_user_table
+
 
 engine = create_engine("mysql+mysqldb://root:39853201@localhost:3306/email_campaign")
 metadata = MetaData()
@@ -15,11 +16,13 @@ SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 def init_db() -> None:
     create_campaign_schema(metadata)
     create_contact_list_schema(metadata)
+    create_user_table(metadata)
     metadata.create_all(bind=engine)
 
 
 T = TypeVar("T")
 ID = TypeVar("ID")
+
 
 class MySQLRepo(Generic[T, ID], ABC):
     def _save(self, entity: T) -> None:
