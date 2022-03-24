@@ -5,14 +5,14 @@ from http import HTTPStatus
 
 from flask import Blueprint, Response, jsonify, request
 
-from app.scheduling.domain.campaign import CampaignId
+from app.email_campaign_scheduling.domain.campaign import CampaignId
 
-from app.scheduling.application.campaign_creator import (
+from app.email_campaign_scheduling.application.campaign_creator import (
     CreateCampaignCommand,
     create_campaign,
 )
-from app.scheduling.application.campaign_finder import find_campaign
-from app.scheduling.application.campaign_scheduler import (
+from app.email_campaign_scheduling.application.campaign_finder import find_campaign
+from app.email_campaign_scheduling.application.campaign_scheduler import (
     ScheduleCommand,
     schedule_campaign,
 )

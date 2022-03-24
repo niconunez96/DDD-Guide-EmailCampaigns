@@ -4,7 +4,7 @@ from uuid import UUID
 from sqlalchemy import String, TypeDecorator
 from sqlalchemy.sql.sqltypes import TypeEngine
 
-from app.shared.domain import DomainId
+from app.shared.domain.aggregate import DomainId
 
 
 class DomainIdObjectType(TypeDecorator):

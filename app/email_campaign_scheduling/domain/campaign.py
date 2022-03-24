@@ -1,11 +1,7 @@
-from __future__ import annotations
-
-from dataclasses import dataclass
 from datetime import datetime
 from typing import Literal, Optional, TypedDict
-from uuid import UUID
 
-from app.shared.domain import DomainId
+from app.shared.domain.aggregate import DomainId
 
 
 CAMPAIGN_STATUS = Literal[

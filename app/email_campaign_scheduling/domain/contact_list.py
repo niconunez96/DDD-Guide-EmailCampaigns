@@ -1,7 +1,5 @@
-from dataclasses import dataclass
 from typing import Literal, TypedDict
-from uuid import UUID
-from app.shared.domain import DomainId
+from app.shared.domain.aggregate import DomainId
 
 
 ContactStatus = Literal["BOUNCED", "DELIVERABLE"]

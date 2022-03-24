@@ -3,12 +3,12 @@ from uuid import uuid4
 from flask import Response, jsonify, request
 from http import HTTPStatus
 from flask.blueprints import Blueprint
-from app.scheduling.application.contact_list import (
+from app.email_campaign_scheduling.application.contact_list import (
     create_contact_list,
     CreateContactListCommand,
     find_contact_lists,
 )
-from app.scheduling.domain.contact_list import ContactListId
+from app.email_campaign_scheduling.domain.contact_list import ContactListId
 
 contact_list_endpoint = Blueprint(
     "contact_list_endpoint", __name__, url_prefix="/contact_lists"

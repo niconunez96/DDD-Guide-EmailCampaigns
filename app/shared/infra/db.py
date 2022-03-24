@@ -3,8 +3,8 @@ from typing import Generic, Optional, Type, TypeVar
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
-from app.scheduling.infra.campaign_db import create_campaign_schema
-from app.scheduling.infra.contact_list_db import create_contact_list_schema
+from app.email_campaign_scheduling.infra.campaign_db import create_campaign_schema
+from app.email_campaign_scheduling.infra.contact_list_db import create_contact_list_schema
 from app.marketing.infra.user_db import create_user_table
 
 

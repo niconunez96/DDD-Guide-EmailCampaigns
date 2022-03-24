@@ -1,5 +1,5 @@
-from app.scheduling.domain.contact_list import ContactListId, ContactResponse
-from app.scheduling.domain.contact_list_repo import (
+from app.email_campaign_scheduling.domain.contact_list import ContactListId, ContactResponse
+from app.email_campaign_scheduling.domain.contact_list_repo import (
     ContactListRepo,
     contact_list_mysql_repo,
 )

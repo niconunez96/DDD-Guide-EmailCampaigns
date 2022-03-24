@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import abc
 from typing import Generic, Optional, Type, TypeVar
 from uuid import UUID, uuid4

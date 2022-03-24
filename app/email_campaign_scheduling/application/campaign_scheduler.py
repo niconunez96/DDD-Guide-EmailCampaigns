@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
-from app.scheduling.domain.campaign import CampaignId
-from app.scheduling.domain.campaign_repo import CampaignRepo, campaign_mysql_repo
+from app.email_campaign_scheduling.domain.campaign import CampaignId
+from app.email_campaign_scheduling.domain.campaign_repo import CampaignRepo, campaign_mysql_repo
 
 
 @dataclass(frozen=True)

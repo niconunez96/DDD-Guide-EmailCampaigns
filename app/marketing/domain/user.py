@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Literal, cast
 from uuid import UUID, uuid4
-from app.shared.domain import DomainId
+from app.shared.domain.aggregate import DomainId
 from app.shared.domain.event_bus import DomainEvent
 
 
@@ -66,7 +66,7 @@ class UserId(DomainId):
 class User:
     id: UserId
     _plan: MarketingPlan
-    events: list[UserPlanUpgraded | UserPlanDowngraded] = []
+    events: list[UserPlanUpgraded | UserPlanDowngraded | UserCreated] = []
 
     def __init__(self, id: UserId) -> None:
         self.id = id
