@@ -10,6 +10,20 @@ PlanType = Literal["REGULAR", "PREMIUM", "SUPER_SUPER_PREMIUM"]
 
 
 @dataclass(frozen=True)
+class UserCreated(DomainEvent):
+    user_id: str
+    _id: UUID = uuid4()
+
+    @property
+    def id(self) -> str:
+        return str(self._id)
+
+    @property
+    def name(self) -> str:
+        return "USER_CREATED"
+
+
+@dataclass(frozen=True)
 class UserPlanUpgraded(DomainEvent):
     user_id: str
     plan: PlanType
@@ -52,11 +66,12 @@ class UserId(DomainId):
 class User:
     id: UserId
     _plan: MarketingPlan
-    events: list[UserPlanUpgraded | UserPlanDowngraded]
+    events: list[UserPlanUpgraded | UserPlanDowngraded] = []
 
     def __init__(self, id: UserId) -> None:
         self.id = id
         self._plan = MarketingPlan.REGULAR
+        self.events.append(UserCreated(str(self.id)))
 
     def upgrade_plan(self, to_plan: MarketingPlan) -> None:
         if self._plan.value > to_plan.value:
