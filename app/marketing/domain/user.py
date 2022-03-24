@@ -18,8 +18,8 @@ class UserCreated(DomainEvent):
     def id(self) -> str:
         return str(self._id)
 
-    @property
-    def name(self) -> str:
+    @staticmethod
+    def name() -> str:
         return "USER_CREATED"
 
 
@@ -33,8 +33,8 @@ class UserPlanUpgraded(DomainEvent):
     def id(self) -> str:
         return str(self._id)
 
-    @property
-    def name(self) -> str:
+    @staticmethod
+    def name() -> str:
         return "USER_PLAN_UPGRADED"
 
 
@@ -48,8 +48,8 @@ class UserPlanDowngraded(DomainEvent):
     def id(self) -> str:
         return str(self._id)
 
-    @property
-    def name(self) -> str:
+    @staticmethod
+    def name() -> str:
         return "USER_PLAN_DOWNGRADED"
 
 

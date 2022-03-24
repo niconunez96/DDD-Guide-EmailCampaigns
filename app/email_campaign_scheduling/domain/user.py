@@ -7,7 +7,7 @@ DailySendLimit = Literal[2000, 4000, 6000]
 MarketingPlan = Literal["REGULAR", "PREMIUM", "SUPER_SUPER_PREMIUM"]
 
 
-class UserId(DomainId):
+class UserId(DomainId["UserId"]):
     pass
 
 

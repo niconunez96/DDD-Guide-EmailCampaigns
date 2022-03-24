@@ -1,5 +1,5 @@
-from abc import ABC, abstractproperty
-from typing import Protocol
+from abc import ABC, abstractproperty, abstractstaticmethod
+from typing import Generic, Protocol, Type, TypeVar
 
 
 class DomainEvent(ABC):
@@ -7,13 +7,17 @@ class DomainEvent(ABC):
     def id(self) -> str:
         raise NotImplementedError
 
-    @abstractproperty
-    def name(self) -> str:
+    @staticmethod
+    @abstractstaticmethod
+    def name() -> str:
         raise NotImplementedError
 
 
-class EventListener:
-    def listen(self, event: DomainEvent) -> None:
+T = TypeVar("T", bound=DomainEvent)
+
+
+class EventListener(Generic[T]):
+    def listen(self, event: T) -> None:
         raise NotImplementedError
 
 
@@ -26,11 +30,11 @@ class InMemoryEventBus:
 
     event_mapping: dict[str, list[EventListener]] = {}
 
-    def register(self, event: DomainEvent, listeners: list[EventListener]) -> None:
-        self.event_mapping[event.name] = listeners
+    def register(self, event: Type[DomainEvent], listeners: list[EventListener]) -> None:
+        self.event_mapping[event.name()] = listeners
 
     def _publish(self, event: DomainEvent) -> None:
-        listeners = self.event_mapping.get(event.name)
+        listeners = self.event_mapping.get(event.name())
         if not listeners:
             return
         for listener in listeners:

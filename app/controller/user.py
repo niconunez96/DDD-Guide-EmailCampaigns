@@ -9,6 +9,7 @@ from app.marketing.application import (
     upgrade_user_plan,
     downgrade_user_plan,
 )
+from app.shared.infra.event_bus import in_memory_event_bus
 
 user_endpoint = Blueprint("user", __name__, url_prefix="/users")
 
@@ -22,7 +23,7 @@ plans = {
 @user_endpoint.route("/", methods=["POST"])
 def create() -> tuple[Response, HTTPStatus]:
     id = UserId(uuid.uuid4())
-    create_user(id)
+    create_user(id, in_memory_event_bus)
     return jsonify({"data": {"id": str(id)}}), HTTPStatus.CREATED
 
 
@@ -35,7 +36,7 @@ def upgrade(id: str) -> tuple[Response, HTTPStatus]:
     if not plan or plan not in plans:
         return jsonify({"error": "INVALID_PLAN"}), HTTPStatus.BAD_REQUEST
     try:
-        upgrade_user_plan(user_id, MarketingPlan.PREMIUM)
+        upgrade_user_plan(user_id, MarketingPlan.PREMIUM, in_memory_event_bus)
     except Exception as e:
         match str(e):  # type: ignore
             case "USER_NOT_FOUND": return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
@@ -52,7 +53,7 @@ def downgrade(id: str) -> tuple[Response, HTTPStatus]:
     if not plan or plan not in plans:
         return jsonify({"error": "INVALID_PLAN"}), HTTPStatus.BAD_REQUEST
     try:
-        downgrade_user_plan(user_id, MarketingPlan(plans[plan]))
+        downgrade_user_plan(user_id, MarketingPlan(plans[plan]), in_memory_event_bus)
     except Exception as e:
         match str(e):  # type: ignore
             case "USER_NOT_FOUND": return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
