@@ -4,7 +4,12 @@ from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 from app.email_campaign_scheduling.infra.campaign_db import create_campaign_schema
-from app.email_campaign_scheduling.infra.contact_list_db import create_contact_list_schema
+from app.email_campaign_scheduling.infra.contact_list_db import (
+    create_contact_list_schema,
+)
+from app.email_campaign_scheduling.infra.user_db import (
+    create_user_table as create_campaign_user_table,
+)
 from app.marketing.infra.user_db import create_user_table
 
 
@@ -17,6 +22,7 @@ def init_db() -> None:
     create_campaign_schema(metadata)
     create_contact_list_schema(metadata)
     create_user_table(metadata)
+    create_campaign_user_table(metadata)
     metadata.create_all(bind=engine)
 
 
