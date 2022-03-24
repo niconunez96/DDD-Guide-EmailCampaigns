@@ -14,7 +14,7 @@ class UserRepo(Protocol):
         raise NotImplementedError
 
 
-class UserMySQLRepo(MySQLRepo):
+class UserMySQLRepo(MySQLRepo[User, UserId]):
     def store(self, user: User) -> None:
         super()._save(user)
 
@@ -24,6 +24,7 @@ class UserMySQLRepo(MySQLRepo):
     def find_by_id(self, id: UserId) -> Optional[User]:
         return super()._find_by_id(id)
 
+    @property
     def _clz(self) -> Type[User]:
         return User
 

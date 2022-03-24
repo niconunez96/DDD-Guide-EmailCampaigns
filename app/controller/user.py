@@ -36,7 +36,7 @@ def upgrade(id: str) -> tuple[Response, HTTPStatus]:
     if not plan or plan not in plans:
         return jsonify({"error": "INVALID_PLAN"}), HTTPStatus.BAD_REQUEST
     try:
-        upgrade_user_plan(user_id, MarketingPlan.PREMIUM, in_memory_event_bus)
+        upgrade_user_plan(user_id, MarketingPlan(plans[plan]), in_memory_event_bus)
     except Exception as e:
         match str(e):  # type: ignore
             case "USER_NOT_FOUND": return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND

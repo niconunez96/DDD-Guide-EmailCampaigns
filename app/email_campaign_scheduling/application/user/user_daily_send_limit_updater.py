@@ -1,4 +1,3 @@
-from typing import Literal
 from app.email_campaign_scheduling.domain.user import MarketingPlan, UserId
 from app.email_campaign_scheduling.domain.user_repo import UserRepo, user_mysql_repo
 

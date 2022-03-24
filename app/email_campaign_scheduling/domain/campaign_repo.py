@@ -26,6 +26,7 @@ class CampaignMySQLRepo(MySQLRepo[Campaign, CampaignId]):
     def update(self, campaign: Campaign) -> None:
         super()._save(campaign)
 
+    @property
     def _clz(self) -> Type[Campaign]:
         return Campaign
 

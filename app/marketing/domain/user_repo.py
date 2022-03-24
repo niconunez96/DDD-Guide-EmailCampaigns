@@ -24,6 +24,7 @@ class UserMySQLRepo(MySQLRepo[User, UserId]):
     def find_by_id(self, id: UserId) -> Optional[User]:
         return super()._find_by_id(id)
 
+    @property
     def _clz(self) -> Type[User]:
         return User
 
