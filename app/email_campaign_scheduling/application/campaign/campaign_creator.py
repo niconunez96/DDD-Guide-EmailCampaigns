@@ -3,8 +3,11 @@ from uuid import UUID
 from dataclasses import dataclass
 from logging import getLogger
 
-from ..domain.campaign import Campaign, CampaignId
-from ..domain.campaign_repo import CampaignRepo, campaign_mysql_repo
+from app.email_campaign_scheduling.domain.campaign import Campaign, CampaignId
+from app.email_campaign_scheduling.domain.campaign_repo import (
+    CampaignRepo,
+    campaign_mysql_repo,
+)
 
 logger = getLogger(__name__)
 
