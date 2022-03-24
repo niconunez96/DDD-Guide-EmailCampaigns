@@ -12,7 +12,10 @@
 4. As a user I want to create contact lists
 5. As a user I want to specify contact lists for a campaign
 6. As a user I want to know the delivery status of my recipients
-7. Users will have a daily send limit
+7. Users will have a daily send limit which can vary depending on the marketing plan
+    * Regular users should have 2000 daily send limit
+    * Premium users should have 4000 daily send limit
+    * Super Super Premium users should have 6000 daily send limit
 
 # DDD
 ## Domain modeling
@@ -68,3 +71,11 @@ def create_campaign(
 ) -> None:
     ...
 ```
+
+# Events
+An event is something meaningful that has happened in your system.
+With events you can extend your use cases following the Open/Close principle of SOLID because when an event has happened many listeners can react to that event without the publisher even notice.
+## Events vs Query vs Commands
+Query: A query is a request of information, queries must be synchronous with a fixed response `i.e: FindRegularUsers`
+Command: A command is an intetion of changing the state of the application, so that executing a command has side effects on the system. Commands should not have a fixed response and they can be asynchronous. `i.e: UpgradeUserPlan`
+Event: An event is something that has happened in the system and its propagation is irreversible. Events are generated from Commands and they not have any response. `i.e: UserPlanUpgraded`
