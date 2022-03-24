@@ -5,7 +5,9 @@ from uuid import UUID
 
 
 class DomainEvent(ABC):
-    id: UUID
+    @abstractproperty
+    def id(self) -> str:
+        raise NotImplementedError
 
     @abstractproperty
     def name(self) -> str:
@@ -18,7 +20,7 @@ class EventListener:
 
 
 class EventBus(Protocol):
-    def publish(self, event: DomainEvent) -> None:
+    def publish(self, *events: DomainEvent) -> None:
         raise NotImplementedError
 
 
@@ -29,9 +31,13 @@ class InMemoryEventBus:
     def register(self, event: DomainEvent, listeners: list[EventListener]) -> None:
         self.event_mapping[event.name] = listeners
 
-    def publish(self, event: DomainEvent) -> None:
+    def _publish(self, event: DomainEvent) -> None:
         listeners = self.event_mapping.get(event.name)
         if not listeners:
             return
         for listener in listeners:
             listener.listen(event)
+
+    def publish(self, *events: DomainEvent) -> None:
+        for event in events:
+            self._publish(event)

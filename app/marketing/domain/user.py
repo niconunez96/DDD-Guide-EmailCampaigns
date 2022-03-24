@@ -1,6 +1,42 @@
+from dataclasses import dataclass
 from enum import Enum
-from typing import Literal
+from typing import Literal, cast
+from uuid import UUID, uuid4
 from app.shared.domain import DomainId
+from app.shared.domain.event_bus import DomainEvent
+
+
+PlanType = Literal["REGULAR", "PREMIUM", "SUPER_SUPER_PREMIUM"]
+
+
+@dataclass(frozen=True)
+class UserPlanUpgraded(DomainEvent):
+    user_id: str
+    plan: PlanType
+    _id: UUID = uuid4()
+
+    @property
+    def id(self) -> str:
+        return str(self._id)
+
+    @property
+    def name(self) -> str:
+        return "USER_PLAN_UPGRADED"
+
+
+@dataclass(frozen=True)
+class UserPlanDowngraded(DomainEvent):
+    user_id: str
+    plan: PlanType
+    _id: UUID = uuid4()
+
+    @property
+    def id(self) -> str:
+        return str(self._id)
+
+    @property
+    def name(self) -> str:
+        return "USER_PLAN_DOWNGRADED"
 
 
 class MarketingPlan(Enum):
@@ -16,6 +52,7 @@ class UserId(DomainId):
 class User:
     id: UserId
     _plan: MarketingPlan
+    events: list[UserPlanUpgraded | UserPlanDowngraded]
 
     def __init__(self, id: UserId) -> None:
         self.id = id
@@ -25,8 +62,14 @@ class User:
         if self._plan.value > to_plan.value:
             raise Exception("CANNOT_UPGRADE")
         self._plan = to_plan
+        self.events.append(
+            UserPlanUpgraded(str(self.id), cast(PlanType, self._plan.name))
+        )
 
     def downgrade_plan(self, to_plan: MarketingPlan) -> None:
         if self._plan.value < to_plan.value:
             raise Exception("CANNOT_DOWNGRADE")
         self._plan = to_plan
+        self.events.append(
+            UserPlanDowngraded(str(self.id), cast(PlanType, self._plan.name))
+        )
