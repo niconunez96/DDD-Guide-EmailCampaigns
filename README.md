@@ -44,6 +44,34 @@ Define the interface in terms of the language of the model and make sure the ope
 of the UBIQUITOUS LANGUAGE. Make the SERVICE stateless.
 Eric evans. DDD
 ```
+In python you can create service with plain functions or the OOP alternative is using `__call__` method.
+
+Function
+```python
+def upgrade_user_plan(
+    user_id: UserId, new_plan: MarketingPlan, user_repo: UserRepo = user_mysql_repo
+) -> None:
+    user = user_repo.find_by_id(user_id)
+    if not user:
+        raise Exception("User not found")
+    user.upgrade_plan(new_plan)
+    user_repo.update(user)
+
+```
+Class
+```python
+class UserPlanUpgrader:
+    def __init__(self, user_repo: UserRepo = user_mysql_repo) -> None:
+        self.user_repo = user_repo
+
+    def __call__(self, user_id: UserId, new_plan: MarketingPlan) -> None:
+        user = self.user_repo.find_by_id(user_id)
+        if not user:
+            raise Exception("User not found")
+        user.upgrade_plan(new_plan)
+        self.user_repo.update(user)
+```
+
 ### Repositories
 Repositories are an abstraction to handle persistence of data. They are responsible of retreiving and storing
 our domain objects into a durable database. Because they are an infrastructure concern they should not be coupled
