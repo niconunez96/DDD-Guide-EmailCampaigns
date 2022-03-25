@@ -8,10 +8,16 @@ from app.email_campaign_scheduling.domain.campaign_repo import (
 
 
 def find_campaign(
-    id: CampaignId, campaign_repo: Optional[CampaignRepo] = None
+    id: CampaignId, campaign_repo: CampaignRepo = campaign_mysql_repo
 ) -> Optional[CampaignResponse]:
-    campaign_repo = campaign_repo or campaign_mysql_repo
     campaign = campaign_repo.find(id)
     if not campaign:
         return None
     return campaign.to_response()
+
+
+def find_user_campaigns(
+    user_id: str, campaign_repo: CampaignRepo = campaign_mysql_repo
+) -> list[CampaignResponse]:
+    campaigns = campaign_repo.find_by_user(user_id)
+    return [campaign.to_response() for campaign in campaigns]

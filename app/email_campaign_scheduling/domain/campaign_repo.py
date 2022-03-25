@@ -1,7 +1,7 @@
-from typing import Optional, Protocol, Type
+from typing import Optional, Protocol, Type, overload
 
-from app.shared.infra.db import MySQLRepo
-
+from app.shared.infra.db import MySQLRepo, SessionFactory
+from sqlalchemy.orm import scoped_session
 from .campaign import Campaign, CampaignId
 
 
@@ -10,6 +10,9 @@ class CampaignRepo(Protocol):
         raise NotImplementedError
 
     def find(self, id: CampaignId) -> Optional[Campaign]:
+        raise NotImplementedError
+
+    def find_by_user(self, user_id: str) -> list[Campaign]:
         raise NotImplementedError
 
     def update(self, campaign: Campaign) -> None:
@@ -22,6 +25,12 @@ class CampaignMySQLRepo(MySQLRepo[Campaign, CampaignId]):
 
     def find(self, id: CampaignId) -> Optional[Campaign]:
         return super()._find_by_id(id)
+
+    def find_by_user(self, user_id: str) -> list[Campaign]:
+        session = scoped_session(SessionFactory)
+        campaigns: list[Campaign] = session.query(Campaign).filter_by(_user_id=user_id).all()
+        session.close()
+        return campaigns
 
     def update(self, campaign: Campaign) -> None:
         super()._save(campaign)

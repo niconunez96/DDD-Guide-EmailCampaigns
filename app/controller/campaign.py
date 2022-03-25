@@ -13,6 +13,7 @@ from app.email_campaign_scheduling.application.campaign.campaign_creator import 
 )
 from app.email_campaign_scheduling.application.campaign.campaign_finder import (
     find_campaign,
+    find_user_campaigns,
 )
 from app.email_campaign_scheduling.application.campaign.campaign_scheduler import (
     ScheduleCommand,
@@ -31,6 +32,15 @@ def find(id: str) -> tuple[Response, HTTPStatus]:
     if not campaign:
         return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
     return jsonify({"data": campaign}), HTTPStatus.OK
+
+
+@campaign_endpoint.route("/", methods=["GET"])
+def find_by_user() -> tuple[Response, HTTPStatus]:
+    id = request.args.get("user_id")
+    if not id:
+        return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
+    campaigns = find_user_campaigns(id)
+    return jsonify({"data": campaigns}), HTTPStatus.OK
 
 
 @campaign_endpoint.route("/<string:id>/schedule/", methods=["POST"])
