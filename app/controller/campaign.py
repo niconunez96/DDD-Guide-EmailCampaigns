@@ -61,7 +61,12 @@ def create() -> tuple[Response, HTTPStatus]:
         return jsonify({"error": "MISSING_DATA"}), HTTPStatus.BAD_REQUEST
     create_campaign(
         CreateCampaignCommand(
-            id, data["name"], data["subject"], data["body"], data["sender"]
+            id,
+            data["name"],
+            data["subject"],
+            data["body"],
+            data["sender"],
+            data["user_id"],
         ),
     )
     return jsonify({"data": {"id": id}}), HTTPStatus.CREATED

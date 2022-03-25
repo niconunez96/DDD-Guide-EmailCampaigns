@@ -25,6 +25,7 @@ class CampaignResponse(TypedDict):
 class CampaignId(DomainId["CampaignId"]):
     pass
 
+
 class Campaign:
     id: CampaignId
     _name: str
@@ -33,14 +34,24 @@ class Campaign:
     _sender: str
     _schedule_datetime: Optional[datetime] = None
     _status: CAMPAIGN_STATUS
+    _user_id: str
 
-    def __init__(self, id: CampaignId, name: str, subject: str, body: str, sender: str):
+    def __init__(
+        self,
+        id: CampaignId,
+        name: str,
+        subject: str,
+        body: str,
+        sender: str,
+        user_id: str,
+    ) -> None:
         self.id = id
         self._name = name
         self._subject = subject
         self._body = body
         self._sender = sender
         self._status = "DRAFT"
+        self._user_id = user_id
 
     def __str__(self) -> str:
         return f"Campaign {self._name}"

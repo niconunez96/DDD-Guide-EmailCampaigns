@@ -19,6 +19,7 @@ class CreateCampaignCommand:
     subject: str
     body: str
     sender: str
+    user_id: str
 
 
 def create_campaign(
@@ -31,6 +32,7 @@ def create_campaign(
         command.subject,
         command.body,
         command.sender,
+        command.user_id,
     )
     logger.info(campaign)
     campaign_repo.store(campaign)
