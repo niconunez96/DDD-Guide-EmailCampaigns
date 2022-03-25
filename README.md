@@ -100,7 +100,7 @@ def create_campaign(
     ...
 ```
 
-# Events
+# Domain Events
 An event is something meaningful that has happened in your system.
 With events you can extend your use cases following the Open/Close principle of SOLID because when an event has happened many listeners can react to that event without the publisher even notice.
 ## Events vs Query vs Commands

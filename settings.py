@@ -21,4 +21,4 @@ def init_logging() -> None:
     #         "root": {"level": "INFO", "handlers": ["wsgi"]},
     #     }
     # )
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)

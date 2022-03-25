@@ -1,11 +1,14 @@
 black==21.12b0
 elliptic-curve==0.1.2
 Flask==2.0.2
+flask-shell-ipython==0.4.1
 Flask-SQLAlchemy==2.5.1
 ipdb==0.13.9
 ipython==8.1.1
-mypy==0.931
+mypy==0.942
+mysqlclient==2.1.0
 python-dotenv==0.19.2
+python-http-client==3.3.7
 sendgrid==6.4.0
 SQLAlchemy==1.4.29
 SQLAlchemy-Utils==0.38.2
