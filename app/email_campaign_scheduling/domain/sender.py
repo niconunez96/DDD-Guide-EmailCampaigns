@@ -7,12 +7,12 @@ DailySendLimit = Literal[2000, 4000, 6000]
 MarketingPlan = Literal["REGULAR", "PREMIUM", "SUPER_SUPER_PREMIUM"]
 
 
-class UserId(DomainId["UserId"]):
+class SenderId(DomainId["SenderId"]):
     pass
 
 
-class User:
-    id: UserId
+class Sender:
+    id: SenderId
     daily_send_limit: DailySendLimit
     daily_send_limit_per_plan: dict[MarketingPlan, DailySendLimit] = {
         "REGULAR": 2000,
@@ -20,7 +20,7 @@ class User:
         "SUPER_SUPER_PREMIUM": 6000,
     }
 
-    def __init__(self, id: UserId) -> None:
+    def __init__(self, id: SenderId) -> None:
         self.id = id
         self.daily_send_limit = 2000
 
