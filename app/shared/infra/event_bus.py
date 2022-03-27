@@ -1,6 +1,6 @@
 from ..domain.event_bus import InMemoryEventBus
 from app.marketing.domain.user import UserCreated, UserPlanDowngraded, UserPlanUpgraded
-from app.email_campaign_scheduling.application.event_listeners import (
+from app.email_campaign_scheduling.infra.event_listeners import (
     UserDowngradedListener,
     UserCreatedListener,
     UserUpgradedListener,
