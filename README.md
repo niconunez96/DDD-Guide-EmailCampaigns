@@ -106,6 +106,6 @@ def create_campaign(
 An event is something meaningful that has happened in your system.
 With events you can extend your use cases following the Open/Close principle of SOLID because when an event has happened many listeners can react to that event without the publisher even notice.
 ### Events vs Query vs Commands
-Query: A query is a request of information, queries must be synchronous with a fixed response `i.e: FindRegularUsers`
-Command: A command is an intetion of changing the state of the application, so that executing a command has side effects on the system. Commands should not have a fixed response and they can be asynchronous. `i.e: UpgradeUserPlan`
-Event: An event is something that has happened in the system and its propagation is irreversible. Events are generated from Commands and they not have any response. `i.e: UserPlanUpgraded`
+1. Query: A query is a request of information, queries must be synchronous with a fixed response `i.e: FindRegularUsers`
+2. Command: A command is an intention of changing the state of the application, so that executing a command has side effects on the system. Commands should not have a fixed response and they can be asynchronous. `i.e: UpgradeUserPlan`
+3. Event: An event is something that has happened in the system and its propagation is irreversible. Events are generated from Commands and they do not have any response. `i.e: UserPlanUpgraded`
