@@ -1,6 +1,7 @@
 from app.shared.infra.sqlalchemy_types import DomainIdObjectType
 from sqlalchemy import Column, MetaData, String, Table, ForeignKey, Integer
-from sqlalchemy.orm import registry, relationship
+from sqlalchemy.orm import relationship
+from sqlalchemy.orm.decl_api import registry
 from sqlalchemy_utils import UUIDType
 
 from ..domain.contact_list import Contact, ContactList, ContactListId
@@ -37,7 +38,7 @@ def create_contact_list_schema(metadata: MetaData) -> None:
     )
 
     contact_list_X_contacts_table = Table(
-        "contact_list_X_contacts",
+        "contact_lists_X_contacts",
         metadata,
         Column(
             "contact_list_id",

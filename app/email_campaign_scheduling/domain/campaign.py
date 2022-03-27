@@ -1,5 +1,8 @@
+from dataclasses import dataclass
 from datetime import datetime
+from ipaddress import ip_address
 from typing import Literal, Optional, TypedDict
+from app.email_campaign_scheduling.domain.contact_list import ContactList
 
 from app.shared.domain.aggregate import DomainId
 
@@ -22,6 +25,22 @@ class CampaignResponse(TypedDict):
     status: str
 
 
+class ContactListTarget:
+    id: int
+    contact_list_id: str
+
+    def __init__(self, contact_list_id: str) -> None:
+        self.contact_list_id = contact_list_id
+
+    def __eq__(self, __o: object) -> bool:
+        if not isinstance(__o, ContactListTarget):
+            return False
+        return self.contact_list_id == __o.contact_list_id
+
+    def __hash__(self) -> int:
+        return hash(self.contact_list_id)
+
+
 class CampaignId(DomainId["CampaignId"]):
     pass
 
@@ -35,6 +54,7 @@ class Campaign:
     _schedule_datetime: Optional[datetime] = None
     _status: CAMPAIGN_STATUS
     _user_id: str
+    _contact_list_targets: set[ContactListTarget]
 
     def __init__(
         self,
@@ -52,6 +72,7 @@ class Campaign:
         self._sender = sender
         self._status = "DRAFT"
         self._user_id = user_id
+        self._contact_list_targets = set()
 
     def __str__(self) -> str:
         return f"Campaign {self._name}"
@@ -85,3 +106,16 @@ class Campaign:
             raise Exception("Cannot schedule a campaign that has status" + self._status)
         self._schedule_datetime = schedule_datetime
         self._status = "SCHEDULED"
+
+    def add_contact_lists(self, contact_lists: list[ContactList]) -> None:
+        if not all(
+            self._user_id == contact_list._user_id for contact_list in contact_lists
+        ):
+            raise Exception("USER_ID_MISMATCH")
+        new_contact_list_targets = {
+            ContactListTarget(
+                contact_list_id=str(contact_list.id),
+            )
+            for contact_list in contact_lists
+        }
+        self._contact_list_targets.update(new_contact_list_targets)

@@ -39,7 +39,7 @@ class MySQLRepo(Generic[T, ID], ABC):
 
     def _find_by_id(self, id: ID) -> Optional[T]:
         session = scoped_session(SessionFactory)
-        entity: Optional[T] = session.query(self._clz).filter_by(id=id).first()
+        entity = session.query(self._clz).filter_by(id=id).first()
         session.close()
         return entity
 

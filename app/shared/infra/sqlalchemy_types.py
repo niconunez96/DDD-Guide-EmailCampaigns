@@ -19,15 +19,14 @@ class DomainIdObjectType(TypeDecorator):
     def load_dialect_impl(self, dialect: Any) -> Any:
         return dialect.type_descriptor(self.type)
 
-    def process_bind_param(
-        self, value_object: Optional[DomainId], dialect: Any
-    ) -> UUID:
+    def process_bind_param(self, value_object: Optional[DomainId], dialect: Any) -> str:
         value: UUID
         if value_object is not None:
             value = value_object.value
-        return value
+        return str(value)
 
-    def process_result_value(self, value: Optional[UUID], dialect: Any) -> DomainId:
-        if value is not None:
-            value_object = self.class_of_value_object(value)
+    def process_result_value(
+        self, value: Optional[UUID], dialect: Any
+    ) -> Optional[DomainId]:
+        value_object = self.class_of_value_object(value) if value else None
         return value_object

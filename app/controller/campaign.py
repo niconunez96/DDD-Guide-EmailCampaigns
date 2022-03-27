@@ -19,6 +19,11 @@ from app.email_campaign_scheduling.application.campaign.campaign_scheduler impor
     ScheduleCommand,
     schedule_campaign,
 )
+from app.email_campaign_scheduling.application.campaign_contact_list_adder import (
+    add_contact_lists,
+    AddCampaignToContactListCommand,
+)
+from app.email_campaign_scheduling.domain.contact_list import ContactListId
 
 campaign_endpoint = Blueprint("campaign", __name__, url_prefix="/campaigns")
 
@@ -80,3 +85,26 @@ def create() -> tuple[Response, HTTPStatus]:
         ),
     )
     return jsonify({"data": {"id": id}}), HTTPStatus.CREATED
+
+
+@campaign_endpoint.route("/<string:id>/contact_lists/", methods=["POST"])
+def add_cl(id: str) -> tuple[Response, HTTPStatus]:
+    campaign_id = CampaignId.from_string(id)
+    if not campaign_id:
+        return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
+    data = request.json
+    if not data:
+        return jsonify({"error": "MISSING_DATA"}), HTTPStatus.BAD_REQUEST
+    cl_ids = [
+        ContactListId.from_string(cl_id) for cl_id in data.get("contact_list_ids", [])
+    ]
+    contact_list_ids = [id for id in cl_ids if id]
+    try:
+        add_contact_lists(AddCampaignToContactListCommand(campaign_id, contact_list_ids))
+        return jsonify({}), HTTPStatus.ACCEPTED
+    except Exception as e:
+        match e:
+            case "CAMPAIGN_NOT_FOUND": return jsonify({"error": str(e)}), HTTPStatus.NOT_FOUND
+            case "CONTACT_LISTS_NOT_FOUND": return jsonify({"error": str(e)}), HTTPStatus.BAD_REQUEST
+            case "USER_ID_MISMATCH": return jsonify({"error": str(e)}), HTTPStatus.BAD_REQUEST
+            case _: return jsonify({"error": "UNKNOWN"}), HTTPStatus.INTERNAL_SERVER_ERROR

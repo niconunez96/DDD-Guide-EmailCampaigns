@@ -13,6 +13,9 @@ class ContactListRepo(Protocol):
     ) -> Optional[ContactList]:
         raise NotImplementedError
 
+    def find(self, ids: list[ContactListId]) -> list[ContactList]:
+        raise NotImplementedError
+
 
 class ContactListMySQLRepo(MySQLRepo[ContactList, ContactListId]):
     def store(self, contact_list: ContactList) -> None:
@@ -32,6 +35,14 @@ class ContactListMySQLRepo(MySQLRepo[ContactList, ContactListId]):
             session.close()
             return contact_list
         return super()._find_by_id(id)
+
+    def find(self, ids: list[ContactListId]) -> list[ContactList]:
+        session = scoped_session(SessionFactory)
+        contact_lists = (
+            session.query(ContactList).filter(ContactList.id.in_(ids)).all()  # type: ignore
+        )
+        session.close()
+        return contact_lists
 
     @property
     def _clz(self) -> Type[ContactList]:

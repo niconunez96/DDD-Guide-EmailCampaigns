@@ -1,6 +1,6 @@
 from app.shared.infra.sqlalchemy_types import DomainIdObjectType
 from sqlalchemy import Column, MetaData, Table, Integer
-from sqlalchemy.orm import registry
+from sqlalchemy.orm.decl_api import registry
 from sqlalchemy_utils import UUIDType
 
 from ..domain.user import User, UserId
@@ -11,7 +11,7 @@ mapper_registry = registry()
 
 def create_user_table(metadata: MetaData) -> None:
     user_table = Table(
-        "campaign_users",
+        "scheduling__users",
         metadata,
         Column(
             "id",

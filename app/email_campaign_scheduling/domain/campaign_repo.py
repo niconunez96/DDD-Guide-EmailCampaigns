@@ -1,7 +1,7 @@
 from typing import Optional, Protocol, Type, overload
 
 from app.shared.infra.db import MySQLRepo, SessionFactory
-from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import scoped_session, raiseload
 from .campaign import Campaign, CampaignId
 
 
@@ -28,7 +28,12 @@ class CampaignMySQLRepo(MySQLRepo[Campaign, CampaignId]):
 
     def find_by_user(self, user_id: str) -> list[Campaign]:
         session = scoped_session(SessionFactory)
-        campaigns: list[Campaign] = session.query(Campaign).filter_by(_user_id=user_id).all()
+        campaigns: list[Campaign] = (
+            session.query(Campaign)
+            .options(raiseload("_contact_list_targets"))
+            .filter_by(_user_id=user_id)
+            .all()
+        )
         session.close()
         return campaigns
 
