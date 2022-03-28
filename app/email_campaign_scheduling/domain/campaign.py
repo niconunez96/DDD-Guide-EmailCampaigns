@@ -28,10 +28,11 @@ class CampaignResponse(TypedDict):
 class ContactListTarget:
     id: int
     contact_list_id: str
-    quantity_sent: int = 0
+    quantity_sent: int
 
     def __init__(self, contact_list_id: str) -> None:
         self.contact_list_id = contact_list_id
+        self.quantity_sent = 0
 
     def __eq__(self, __o: object) -> bool:
         if not isinstance(__o, ContactListTarget):

@@ -21,7 +21,7 @@ def create_campaign_schema(metadata: MetaData) -> None:
             autoincrement=True,
         ),
         Column("contact_list_id", String(50)),
-        Column("quantity_sent", Integer()),
+        Column("quantity_sent", Integer(), nullable=False),
         Column(
             "campaign_id",
             DomainIdObjectType(CampaignId, UUIDType(binary=False)),
@@ -53,6 +53,7 @@ def create_campaign_schema(metadata: MetaData) -> None:
                 "ContactListTarget",
                 lazy="joined",
                 collection_class=set,
+                cascade="all, delete-orphan",
             )
         },
     )

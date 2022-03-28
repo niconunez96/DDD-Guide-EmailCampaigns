@@ -108,7 +108,7 @@ def add_cl(id: str) -> tuple[Response, HTTPStatus]:
             case "CAMPAIGN_NOT_FOUND": return jsonify({"error": str(e)}), HTTPStatus.NOT_FOUND
             case "CONTACT_LISTS_NOT_FOUND": return jsonify({"error": str(e)}), HTTPStatus.BAD_REQUEST
             case "USER_ID_MISMATCH": return jsonify({"error": str(e)}), HTTPStatus.BAD_REQUEST
-            case _: return jsonify({"error": "UNKNOWN"}), HTTPStatus.INTERNAL_SERVER_ERROR
+            case _: return jsonify({"error": str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 @campaign_endpoint.route("/<string:id>/send_now/", methods=["POST"])

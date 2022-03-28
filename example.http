@@ -1,45 +1,60 @@
 @host = localhost:8080
-## Create user
-# # @name user
-# POST http://{{host}}/users/
-# Content-Type: application/json
 
+## Create user
+# @name user
+POST http://{{host}}/users/
+Content-Type: application/json
+Accept: application/json
+
+@user_id = {{user.response.body.$.data.id}}
 # GET http://{{host}}/users/5a29678f-d885-49d0-aafd-462ff1797ca9/
 
 # Create campaign
-# POST http://{{host}}/campaigns/
-# Content-Type: application/json
+# @name campaign
+POST http://{{host}}/campaigns/
+Content-Type: application/json
 
-# {
+{
   
-#   "name": "Campaign 1",
-#   "subject": "Campaign 1 subject",
-#   "body": "<h1>Hello world</h1>",
-#   "sender": "nicolas110996@gmail.com",
-#   "user_id": ""
-# }
+  "name": "Campaign 1",
+  "subject": "Campaign 1 subject",
+  "body": "<h1>Hello world</h1>",
+  "sender": "nicolas110996@gmail.com",
+  "user_id": "{{user_id}}"
+}
 
-## Retrieve campaign
-# GET http://{{host}}/campaigns/ff3199c5-906f-40f4-a921-0ed0373ab27c/
+@campaign_id = {{campaign.response.body.$.data.id}}
 
-## Create contact list
-# POST http://{{host}}/contact_lists/
-# Content-Type: application/json
+# Retrieve campaign
+GET http://{{host}}/campaigns/{{campaign_id}}/
 
-# {
-#   "user_id": "cb9403d8-9fd1-44c1-8b5a-8c0175d89fae",
-#   "name": "Contact list 1",
-#   "contacts": [
-#       "example@email.com",
-#       "example2@email.com"
-#   ]
-# }
+# Create contact list
+# @name contact_list
+POST http://{{host}}/contact_lists/
+Content-Type: application/json
+
+{
+  "user_id": "{{user_id}}",
+  "name": "Contact list 1",
+  "contacts": [
+      "nicolas110996@gmail.com"
+  ]
+}
+
+@contact_list_id = {{contact_list.response.body.$.data.id}}
 
 ## Retrieve contacts from contact list
-GET http://{{host}}/contact_lists/975f31fd-8a86-46df-b162-b97f66f2ffad/contacts/
+GET http://{{host}}/contact_lists/{{contact_list_id}}/contacts/
 
 ## Add contact list to campaign
+POST http://{{host}}/campaigns/{{campaign_id}}/contact_lists/
+Content-Type: application/json
+
+{
+  "contact_list_ids": ["{{contact_list_id}}"]
+}
 
 ## Send campaign now
+POST http://{{host}}/campaigns/{{campaign_id}}/send_now/
 
 ## Schedule campaign
