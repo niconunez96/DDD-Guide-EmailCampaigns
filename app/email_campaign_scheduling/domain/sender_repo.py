@@ -3,7 +3,7 @@ from .sender import Sender, SenderId
 from app.shared.infra.db import MySQLRepo
 
 
-class UserRepo(Protocol):
+class SenderRepo(Protocol):
     def store(self, user: Sender) -> None:
         raise NotImplementedError
 
@@ -14,7 +14,7 @@ class UserRepo(Protocol):
         raise NotImplementedError
 
 
-class UserMySQLRepo(MySQLRepo[Sender, SenderId]):
+class SenderMySQLRepo(MySQLRepo[Sender, SenderId]):
     def store(self, user: Sender) -> None:
         super()._save(user)
 
@@ -29,4 +29,4 @@ class UserMySQLRepo(MySQLRepo[Sender, SenderId]):
         return Sender
 
 
-user_mysql_repo = UserMySQLRepo()
+sender_mysql_repo = SenderMySQLRepo()

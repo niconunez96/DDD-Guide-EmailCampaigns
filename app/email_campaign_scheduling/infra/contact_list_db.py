@@ -35,6 +35,7 @@ def create_contact_list_schema(metadata: MetaData) -> None:
         Column("user_id", String(50), key="_user_id"),
         Column("name", String(50), key="_name"),
         Column("status", String(20), key="_status"),
+        Column("contacts_quantity", Integer(), key="_contacts_quantity"),
     )
 
     contact_list_X_contacts_table = Table(

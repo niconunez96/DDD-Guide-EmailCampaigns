@@ -40,6 +40,7 @@ class ContactList:
     _user_id: str
     _name: str
     _contacts: list[Contact]
+    _contacts_quantity: int
 
     def __init__(
         self, id: ContactListId, user_id: str, name: str, contacts: list[Contact] = None
@@ -48,6 +49,7 @@ class ContactList:
         self._user_id = user_id
         self._name = name
         self._contacts = contacts or []
+        self._contacts_quantity = len(self._contacts)
 
     @property
     def contacts(self) -> list[ContactResponse]:

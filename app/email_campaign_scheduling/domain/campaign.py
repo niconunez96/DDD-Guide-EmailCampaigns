@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 from ipaddress import ip_address
-from typing import Literal, Optional, TypedDict
-from app.email_campaign_scheduling.domain.contact_list import ContactList
+from typing import Literal, NamedTuple, Optional, TypedDict
+from app.email_campaign_scheduling.domain.contact_list import ContactList, ContactListId
 
 from app.shared.domain.aggregate import DomainId
 
@@ -39,6 +39,11 @@ class ContactListTarget:
 
     def __hash__(self) -> int:
         return hash(self.contact_list_id)
+
+
+class ContactListToSend(NamedTuple):
+    contact_list_id: ContactListId
+    quantity_limit: int
 
 
 class CampaignId(DomainId["CampaignId"]):
@@ -108,6 +113,8 @@ class Campaign:
         self._status = "SCHEDULED"
 
     def add_contact_lists(self, contact_lists: list[ContactList]) -> None:
+        if self._status != "DRAFT":
+            raise Exception("CANNOT_ADD_CONTACT_LISTS_TO_NON_DRAFT_CAMPAIGN")
         if not all(
             self._user_id == contact_list._user_id for contact_list in contact_lists
         ):
@@ -119,3 +126,20 @@ class Campaign:
             for contact_list in contact_lists
         }
         self._contact_list_targets.update(new_contact_list_targets)
+
+    def calculate_contacts_to_send(
+        self, daily_send_limit: int, contact_lists: list[ContactList]
+    ) -> list[ContactListToSend]:
+        contacts_quantity = 0
+        contact_lists_to_send = []
+        for contact_list in contact_lists:
+            contacts_quantity += contact_list._contacts_quantity
+            if contacts_quantity > daily_send_limit:
+                contact_lists_to_send.append(
+                    ContactListToSend(contact_list.id, daily_send_limit)
+                )
+                break
+            contact_lists_to_send.append(
+                ContactListToSend(contact_list.id, contact_list._contacts_quantity)
+            )
+        return contact_lists_to_send

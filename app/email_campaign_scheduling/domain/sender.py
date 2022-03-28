@@ -1,10 +1,15 @@
-from typing import Literal
+from typing import Literal, TypedDict
 from app.shared.domain.aggregate import DomainId
 
 
 DailySendLimit = Literal[2000, 4000, 6000]
 
 MarketingPlan = Literal["REGULAR", "PREMIUM", "SUPER_SUPER_PREMIUM"]
+
+
+class SenderResponse(TypedDict):
+    id: str
+    daily_send_limit: int
 
 
 class SenderId(DomainId["SenderId"]):
@@ -26,3 +31,10 @@ class Sender:
 
     def update_daily_send_limit(self, new_user_marketing_plan: MarketingPlan) -> None:
         self.daily_send_limit = self.daily_send_limit_per_plan[new_user_marketing_plan]
+
+    @property
+    def to_response(self) -> SenderResponse:
+        return {
+            "id": str(self.id),
+            "daily_send_limit": self.daily_send_limit,
+        }

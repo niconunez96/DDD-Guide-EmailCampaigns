@@ -1,9 +1,9 @@
 from app.email_campaign_scheduling.domain.sender import MarketingPlan, SenderId
-from app.email_campaign_scheduling.domain.sender_repo import UserRepo, user_mysql_repo
+from app.email_campaign_scheduling.domain.sender_repo import SenderRepo, sender_mysql_repo
 
 
 def update_daily_send_limit(
-    id: SenderId, new_plan: MarketingPlan, user_repo: UserRepo = user_mysql_repo
+    id: SenderId, new_plan: MarketingPlan, user_repo: SenderRepo = sender_mysql_repo
 ) -> None:
     user = user_repo.find_by_id(id)
     if not user:

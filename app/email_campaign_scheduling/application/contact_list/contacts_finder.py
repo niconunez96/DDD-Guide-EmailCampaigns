@@ -5,7 +5,7 @@ from app.email_campaign_scheduling.domain.contact_list_repo import (
 )
 
 
-def find_contact_lists(
+def find_contacts(
     contact_list_id: ContactListId,
     contact_list_repo: ContactListRepo = contact_list_mysql_repo,
 ) -> list[ContactResponse]:
