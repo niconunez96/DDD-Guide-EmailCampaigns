@@ -11,7 +11,7 @@ mapper_registry = registry()
 
 def create_user_table(metadata: MetaData) -> None:
     user_table = Table(
-        "sender",
+        "senders",
         metadata,
         Column(
             "id",

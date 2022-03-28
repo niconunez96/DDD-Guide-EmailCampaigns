@@ -30,9 +30,8 @@ class ContactListTarget:
     contact_list_id: str
     quantity_sent: int = 0
 
-    def __init__(self, contact_list_id: str, quantity_sent: int = 0) -> None:
+    def __init__(self, contact_list_id: str) -> None:
         self.contact_list_id = contact_list_id
-        self.quantity_sent = quantity_sent
 
     def __eq__(self, __o: object) -> bool:
         if not isinstance(__o, ContactListTarget):
@@ -103,7 +102,7 @@ class Campaign:
         transitions: dict[CAMPAIGN_STATUS, list[CAMPAIGN_STATUS]] = {
             "DRAFT": ["SCHEDULED", "SENDING"],
             "SCHEDULED": ["SENDING", "DRAFT"],
-            "SENDING": [],
+            "SENDING": ["SENT"],
             "SENT": [],
         }
         return next_status in transitions.get(current_status, [])
@@ -147,20 +146,25 @@ class Campaign:
         return contact_lists_to_send
 
     def start_sending(self) -> None:
+        # if not self._is_valid_status_transition(self._status, "SENDING"):
+        #     raise Exception("CANNOT_START_SENDING")
         self._status = "SENDING"
 
     def mark_as_sent(self) -> None:
+        # if not self._is_valid_status_transition(self._status, "SENT"):
+        #     raise Exception("CANNOT_MARK_AS_SENT")
         self._status = "SENT"
 
     def schedule_for_tomorrow(
         self, contact_lists_sent: dict[ContactListId, int]
     ) -> None:
         self._schedule_datetime = datetime.now() + timedelta(days=1)
+        self._status = "SCHEDULED"
         for contact_list_target in self._contact_list_targets:
-            if contact_list_target.contact_list_id not in contact_lists_sent.keys():
-                continue
             id = cast(
                 ContactListId,
                 ContactListId.from_string(contact_list_target.contact_list_id),
             )
+            if id not in contact_lists_sent.keys():
+                continue
             contact_list_target.quantity_sent += contact_lists_sent.get(id, 0)

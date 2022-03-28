@@ -21,6 +21,7 @@ def create_campaign_schema(metadata: MetaData) -> None:
             autoincrement=True,
         ),
         Column("contact_list_id", String(50)),
+        Column("quantity_sent", Integer()),
         Column(
             "campaign_id",
             DomainIdObjectType(CampaignId, UUIDType(binary=False)),

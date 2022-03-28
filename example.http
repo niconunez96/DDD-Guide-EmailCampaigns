@@ -1,0 +1,45 @@
+@host = localhost:8080
+## Create user
+# # @name user
+# POST http://{{host}}/users/
+# Content-Type: application/json
+
+# GET http://{{host}}/users/5a29678f-d885-49d0-aafd-462ff1797ca9/
+
+# Create campaign
+# POST http://{{host}}/campaigns/
+# Content-Type: application/json
+
+# {
+  
+#   "name": "Campaign 1",
+#   "subject": "Campaign 1 subject",
+#   "body": "<h1>Hello world</h1>",
+#   "sender": "nicolas110996@gmail.com",
+#   "user_id": ""
+# }
+
+## Retrieve campaign
+# GET http://{{host}}/campaigns/ff3199c5-906f-40f4-a921-0ed0373ab27c/
+
+## Create contact list
+# POST http://{{host}}/contact_lists/
+# Content-Type: application/json
+
+# {
+#   "user_id": "cb9403d8-9fd1-44c1-8b5a-8c0175d89fae",
+#   "name": "Contact list 1",
+#   "contacts": [
+#       "example@email.com",
+#       "example2@email.com"
+#   ]
+# }
+
+## Retrieve contacts from contact list
+GET http://{{host}}/contact_lists/975f31fd-8a86-46df-b162-b97f66f2ffad/contacts/
+
+## Add contact list to campaign
+
+## Send campaign now
+
+## Schedule campaign

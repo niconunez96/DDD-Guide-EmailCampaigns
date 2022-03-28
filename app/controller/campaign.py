@@ -23,6 +23,7 @@ from app.email_campaign_scheduling.application.campaign_contact_list_adder impor
     add_contact_lists,
     AddCampaignToContactListCommand,
 )
+from app.email_campaign_scheduling.application.campaign.campaign_sender import send_now as send_campaign_now
 from app.email_campaign_scheduling.domain.contact_list import ContactListId
 
 campaign_endpoint = Blueprint("campaign", __name__, url_prefix="/campaigns")
@@ -108,3 +109,15 @@ def add_cl(id: str) -> tuple[Response, HTTPStatus]:
             case "CONTACT_LISTS_NOT_FOUND": return jsonify({"error": str(e)}), HTTPStatus.BAD_REQUEST
             case "USER_ID_MISMATCH": return jsonify({"error": str(e)}), HTTPStatus.BAD_REQUEST
             case _: return jsonify({"error": "UNKNOWN"}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+
+@campaign_endpoint.route("/<string:id>/send_now/", methods=["POST"])
+def send_now(id: str) -> tuple[Response, HTTPStatus]:
+    campaign_id = CampaignId.from_string(id)
+    if not campaign_id:
+        return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
+    try:
+        send_campaign_now(campaign_id)
+        return jsonify({}), HTTPStatus.ACCEPTED
+    except Exception as e:
+        return jsonify({"error": str(e)}), HTTPStatus.BAD_REQUEST

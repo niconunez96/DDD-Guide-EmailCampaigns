@@ -13,7 +13,7 @@ from app.email_campaign_scheduling.infra.sender_db import (
 from app.marketing.infra.user_db import create_user_table
 
 
-engine = create_engine("mysql+mysqldb://root:39853201@localhost:3306/email_campaign", echo=True)
+engine = create_engine("mysql+mysqldb://root:39853201@localhost:3306/ddd_sample", echo=True)
 metadata = MetaData()
 SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

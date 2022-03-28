@@ -15,6 +15,12 @@ class DomainId(abc.ABC, Generic[T]):
     def __init__(self, value: UUID = None) -> None:
         self.value = value or uuid4()
 
+    def __eq__(self, __o: object) -> bool:
+        return isinstance(__o, DomainId) and self.value == __o.value
+
+    def __hash__(self) -> int:
+        return hash(self.value)
+
     @classmethod
     def from_string(cls: Type[T], value: str) -> Optional[T]:
         try:
