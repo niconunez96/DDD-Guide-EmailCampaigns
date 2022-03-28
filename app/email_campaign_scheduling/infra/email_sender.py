@@ -31,13 +31,13 @@ class SendgridEmailSender:
         )
         for recipient in message["recipient_emails"]:
             pers = Personalization()
-            pers.add_to(recipient)
+            pers.add_to(Email(recipient))
             pers.add_custom_arg(CustomArg("campaign_id", message["campaign_id"]))
             pers.add_custom_arg(CustomArg("sender_id", message["sender_id"]))
             email.add_personalization(pers)
         try:
             sg = SendGridAPIClient(os.getenv("SENDGRID_API_KEY"))
-            sg.send(message)
+            sg.send(email)
         except Exception as e:
             self.logger.error(e)
             raise e
