@@ -49,7 +49,7 @@ def dispatch_campaign(
         for target in campaign._contact_list_targets
     ]
     contact_lists = contact_list_repo.find(contact_list_ids)
-    contact_lists_to_send = campaign.calculate_contacts_to_send(
+    contact_lists_to_send = campaign.calculate_contact_lists_to_send(
         sender["daily_send_limit"], contact_lists
     )
     if not contact_lists_to_send:

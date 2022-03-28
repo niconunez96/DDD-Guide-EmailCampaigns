@@ -108,7 +108,7 @@ class Campaign:
         }
         return next_status in transitions.get(current_status, [])
 
-    def mark_as_scheduled(self, schedule_datetime: datetime) -> None:
+    def schedule(self, schedule_datetime: datetime) -> None:
         if not self._is_valid_status_transition(self._status, "SCHEDULED"):
             raise Exception("Cannot schedule a campaign that has status" + self._status)
         self._schedule_datetime = schedule_datetime
@@ -129,7 +129,7 @@ class Campaign:
         }
         self._contact_list_targets.update(new_contact_list_targets)
 
-    def calculate_contacts_to_send(
+    def calculate_contact_lists_to_send(
         self, daily_send_limit: int, contact_lists: list[ContactList]
     ) -> list[ContactListToSend]:
         contacts_quantity = 0

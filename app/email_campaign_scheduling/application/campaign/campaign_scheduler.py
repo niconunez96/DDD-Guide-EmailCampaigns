@@ -18,7 +18,7 @@ def schedule_campaign(
     campaign = campaign_repo.find(cmd.id)
     if not campaign:
         raise Exception("Campaign does not exist")
-    campaign.mark_as_scheduled(cmd.schedule_datetime)
+    campaign.schedule(cmd.schedule_datetime)
     campaign_repo.update(campaign)
 
 
@@ -45,5 +45,5 @@ def update_campaign(
         raise Exception("Campaign does not exist")
     campaign._name = info.name or campaign._name
     if info.schedule_datetime:
-        campaign.mark_as_scheduled(info.schedule_datetime)
+        campaign.schedule(info.schedule_datetime)
     campaign_repo.update(campaign)
