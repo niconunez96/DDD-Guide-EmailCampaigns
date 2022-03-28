@@ -147,13 +147,13 @@ class Campaign:
         return contact_lists_to_send
 
     def start_sending(self) -> None:
-        # if not self._is_valid_status_transition(self._status, "SENDING"):
-        #     raise Exception("CANNOT_START_SENDING")
+        if not self._is_valid_status_transition(self._status, "SENDING"):
+            raise Exception("CANNOT_START_SENDING")
         self._status = "SENDING"
 
     def mark_as_sent(self) -> None:
-        # if not self._is_valid_status_transition(self._status, "SENT"):
-        #     raise Exception("CANNOT_MARK_AS_SENT")
+        if not self._is_valid_status_transition(self._status, "SENT"):
+            raise Exception("CANNOT_MARK_AS_SENT")
         self._status = "SENT"
 
     def schedule_for_tomorrow(
