@@ -146,6 +146,9 @@ class Campaign:
             )
         return contact_lists_to_send
 
+    def start_sending(self) -> None:
+        self._status = "SENDING"
+
     def mark_as_sent(self) -> None:
         self._status = "SENT"
 
