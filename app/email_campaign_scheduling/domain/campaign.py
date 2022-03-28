@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from ipaddress import ip_address
-from typing import Literal, NamedTuple, Optional, TypedDict
+from typing import Literal, NamedTuple, Optional, TypedDict, cast
 from app.email_campaign_scheduling.domain.contact_list import ContactList, ContactListId
 
 from app.shared.domain.aggregate import DomainId
@@ -28,9 +28,11 @@ class CampaignResponse(TypedDict):
 class ContactListTarget:
     id: int
     contact_list_id: str
+    quantity_sent: int = 0
 
-    def __init__(self, contact_list_id: str) -> None:
+    def __init__(self, contact_list_id: str, quantity_sent: int = 0) -> None:
         self.contact_list_id = contact_list_id
+        self.quantity_sent = quantity_sent
 
     def __eq__(self, __o: object) -> bool:
         if not isinstance(__o, ContactListTarget):
@@ -143,3 +145,19 @@ class Campaign:
                 ContactListToSend(contact_list.id, contact_list._contacts_quantity)
             )
         return contact_lists_to_send
+
+    def mark_as_sent(self) -> None:
+        self._status = "SENT"
+
+    def schedule_for_tomorrow(
+        self, contact_lists_sent: dict[ContactListId, int]
+    ) -> None:
+        self._schedule_datetime = datetime.now() + timedelta(days=1)
+        for contact_list_target in self._contact_list_targets:
+            if contact_list_target.contact_list_id not in contact_lists_sent.keys():
+                continue
+            id = cast(
+                ContactListId,
+                ContactListId.from_string(contact_list_target.contact_list_id),
+            )
+            contact_list_target.quantity_sent += contact_lists_sent.get(id, 0)

@@ -52,18 +52,23 @@ def dispatch_campaign(
     contact_lists_to_send = campaign.calculate_contacts_to_send(
         sender["daily_send_limit"], contact_lists
     )
-    for contact_list_to_send in contact_lists_to_send:
-        contacts = find_contacts(contact_list_to_send.contact_list_id)[
-            0 : contact_list_to_send.quantity_limit
-        ]
-        campaign_response = campaign.to_response()
-        email_sender.send_emails(
-            {
-                "subject": campaign_response["subject"],
-                "body": campaign_response["body"],
-                "sender_email": campaign_response["sender"],
-                "sender_id": sender["id"],
-                "campaign_id": campaign_response["id"],
-                "recipient_emails": (contact["email"] for contact in contacts),
-            }
-        )
+    if not contact_lists_to_send:
+        campaign.mark_as_sent()
+    else:
+        for contact_list_to_send in contact_lists_to_send:
+            contacts = find_contacts(contact_list_to_send.contact_list_id)[
+                0 : contact_list_to_send.quantity_limit
+            ]
+            campaign_response = campaign.to_response()
+            email_sender.send_emails(
+                {
+                    "subject": campaign_response["subject"],
+                    "body": campaign_response["body"],
+                    "sender_email": campaign_response["sender"],
+                    "sender_id": sender["id"],
+                    "campaign_id": campaign_response["id"],
+                    "recipient_emails": (contact["email"] for contact in contacts),
+                }
+            )
+        campaign.schedule_for_tomorrow(contact_lists_sent=dict(contact_lists_to_send))
+    campaign_repo.update(campaign)
