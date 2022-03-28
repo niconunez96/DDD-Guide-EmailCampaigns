@@ -66,11 +66,12 @@ class UserId(DomainId):
 class User:
     id: UserId
     _plan: MarketingPlan
-    events: list[UserPlanUpgraded | UserPlanDowngraded | UserCreated] = []
+    events: list[UserPlanUpgraded | UserPlanDowngraded | UserCreated]
 
     def __init__(self, id: UserId) -> None:
         self.id = id
         self._plan = MarketingPlan.REGULAR
+        self.events = []
         self.events.append(UserCreated(str(self.id)))
 
     def upgrade_plan(self, to_plan: MarketingPlan) -> None:
