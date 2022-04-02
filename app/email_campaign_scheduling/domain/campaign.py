@@ -1,11 +1,8 @@
-from dataclasses import dataclass
 from datetime import datetime, timedelta
-from ipaddress import ip_address
-from typing import Literal, NamedTuple, Optional, TypedDict, cast
+from typing import Literal, NamedTuple, Optional, TypedDict
+
 from app.email_campaign_scheduling.domain.contact_list import ContactList, ContactListId
-
 from app.shared.domain.aggregate import DomainId
-
 
 CAMPAIGN_STATUS = Literal[
     "DRAFT",
@@ -27,10 +24,10 @@ class CampaignResponse(TypedDict):
 
 class ContactListTarget:
     id: int
-    contact_list_id: str
+    contact_list_id: ContactListId
     quantity_sent: int
 
-    def __init__(self, contact_list_id: str) -> None:
+    def __init__(self, contact_list_id: ContactListId) -> None:
         self.contact_list_id = contact_list_id
         self.quantity_sent = 0
 
@@ -46,6 +43,11 @@ class ContactListTarget:
 class ContactListToSend(NamedTuple):
     contact_list_id: ContactListId
     quantity_limit: int
+
+
+class ContactListsToSend(NamedTuple):
+    contact_lists: list[ContactListToSend]
+    should_schedule_campaign: bool
 
 
 class CampaignId(DomainId["CampaignId"]):
@@ -123,7 +125,7 @@ class Campaign:
             raise Exception("USER_ID_MISMATCH")
         new_contact_list_targets = {
             ContactListTarget(
-                contact_list_id=str(contact_list.id),
+                contact_list_id=contact_list.id,
             )
             for contact_list in contact_lists
         }
@@ -131,20 +133,32 @@ class Campaign:
 
     def calculate_contact_lists_to_send(
         self, daily_send_limit: int, contact_lists: list[ContactList]
-    ) -> list[ContactListToSend]:
+    ) -> ContactListsToSend:
         contacts_quantity = 0
         contact_lists_to_send = []
-        for contact_list in contact_lists:
+
+        contact_list_targets = sorted(
+            self._contact_list_targets, key=lambda x: x.contact_list_id
+        )
+        contact_lists_sorted = sorted(contact_lists, key=lambda cl: cl.id)
+
+        for (contact_list_target, contact_list) in zip(
+            contact_list_targets, contact_lists_sorted
+        ):
+            if contact_list_target.quantity_sent == contact_list._contacts_quantity:
+                continue
             contacts_quantity += contact_list._contacts_quantity
             if contacts_quantity > daily_send_limit:
                 contact_lists_to_send.append(
-                    ContactListToSend(contact_list.id, daily_send_limit)
+                    ContactListToSend(
+                        contact_list.id, abs(daily_send_limit - contacts_quantity)
+                    )
                 )
-                break
+                return ContactListsToSend(contact_lists_to_send, True)
             contact_lists_to_send.append(
                 ContactListToSend(contact_list.id, contact_list._contacts_quantity)
             )
-        return contact_lists_to_send
+        return ContactListsToSend(contact_lists_to_send, False)
 
     def start_sending(self) -> None:
         if not self._is_valid_status_transition(self._status, "SENDING"):
@@ -162,10 +176,7 @@ class Campaign:
         self._schedule_datetime = datetime.now() + timedelta(days=1)
         self._status = "SCHEDULED"
         for contact_list_target in self._contact_list_targets:
-            id = cast(
-                ContactListId,
-                ContactListId.from_string(contact_list_target.contact_list_id),
-            )
+            id = contact_list_target.contact_list_id
             if id not in contact_lists_sent.keys():
                 continue
             contact_list_target.quantity_sent += contact_lists_sent.get(id, 0)

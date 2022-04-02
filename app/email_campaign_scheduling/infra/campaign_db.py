@@ -1,3 +1,4 @@
+from app.email_campaign_scheduling.domain.contact_list import ContactListId
 from app.shared.infra.sqlalchemy_types import DomainIdObjectType
 from sqlalchemy import Column, MetaData, String, Table, DateTime, ForeignKey, Integer
 from sqlalchemy.orm import relationship
@@ -20,7 +21,9 @@ def create_campaign_schema(metadata: MetaData) -> None:
             primary_key=True,
             autoincrement=True,
         ),
-        Column("contact_list_id", String(50)),
+        Column(
+            "contact_list_id", DomainIdObjectType(ContactListId, UUIDType(binary=False))
+        ),
         Column("quantity_sent", Integer(), nullable=False),
         Column(
             "campaign_id",

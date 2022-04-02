@@ -1,6 +1,6 @@
 from app.shared.infra.sqlalchemy_types import DomainIdObjectType
-from sqlalchemy import Column, MetaData, Table, Integer, Enum
-from sqlalchemy.orm import registry
+from sqlalchemy import Column, MetaData, Table, Enum
+from sqlalchemy.orm.decl_api import registry
 from sqlalchemy_utils import UUIDType
 
 from ..domain.user import MarketingPlan, User, UserId

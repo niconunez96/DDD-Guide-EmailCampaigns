@@ -1,3 +1,4 @@
+from functools import total_ordering
 from typing import Literal, TypedDict
 from app.shared.domain.aggregate import DomainId
 
@@ -31,8 +32,10 @@ class Contact:
         }
 
 
+@total_ordering
 class ContactListId(DomainId["ContactListId"]):
-    pass
+    def __lt__(self, other: "ContactListId") -> bool:
+        return str(self.value) < str(other.value)
 
 
 class ContactList:
