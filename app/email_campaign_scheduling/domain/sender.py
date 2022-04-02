@@ -36,6 +36,10 @@ class Sender:
     def update_daily_send_limit(self, new_user_marketing_plan: MarketingPlan) -> None:
         self.daily_send_limit = self.daily_send_limit_per_plan[new_user_marketing_plan]
 
+    def update_current_limit(self, total_used: int) -> None:
+        self._current_limit = self.daily_send_limit - total_used
+        self._last_time_current_limit_was_updated = datetime.now().date()
+
     @property
     def current_limit(self) -> int:
         if self._last_time_current_limit_was_updated - datetime.now() > timedelta(

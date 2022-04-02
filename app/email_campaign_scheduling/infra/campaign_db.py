@@ -1,4 +1,5 @@
 from app.email_campaign_scheduling.domain.contact_list import ContactListId
+from app.email_campaign_scheduling.domain.sender import SenderId
 from app.shared.infra.sqlalchemy_types import DomainIdObjectType
 from sqlalchemy import Column, MetaData, String, Table, DateTime, ForeignKey, Integer
 from sqlalchemy.orm import relationship
@@ -42,10 +43,14 @@ def create_campaign_schema(metadata: MetaData) -> None:
         Column("name", String(50), key="_name"),
         Column("subject", String(50), key="_subject"),
         Column("body", String(50), key="_body"),
-        Column("sender", String(50), key="_sender"),
+        Column("sender_email", String(50), key="_sender_email"),
         Column("schedule_datetime", DateTime(), key="_schedule_datetime"),
         Column("status", String(10), key="_status"),
-        Column("sender_id", String(50), key="_sender_id"),
+        Column(
+            "sender_id",
+            DomainIdObjectType(SenderId, UUIDType(binary=False)),
+            key="_sender_id",
+        ),
     )
     mapper_registry.map_imperatively(ContactListTarget, contact_list_target_table)
     mapper_registry.map_imperatively(

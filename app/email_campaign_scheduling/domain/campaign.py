@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from typing import Literal, NamedTuple, Optional, TypedDict
 
 from app.email_campaign_scheduling.domain.contact_list import ContactList, ContactListId
+from app.email_campaign_scheduling.domain.sender import SenderId
 from app.shared.domain.aggregate import DomainId
 
 CAMPAIGN_STATUS = Literal[
@@ -47,7 +48,7 @@ class ContactListToSend(NamedTuple):
 
 class ContactListsToSend(NamedTuple):
     contact_lists: list[ContactListToSend]
-    should_schedule_campaign: bool
+    should_reschedule_campaign: bool
 
 
 class CampaignId(DomainId["CampaignId"]):
@@ -59,10 +60,10 @@ class Campaign:
     _name: str
     _subject: str
     _body: str
-    _sender: str
+    _sender_email: str
     _schedule_datetime: Optional[datetime] = None
     _status: CAMPAIGN_STATUS
-    _sender_id: str
+    _sender_id: SenderId
     _contact_list_targets: set[ContactListTarget]
 
     def __init__(
@@ -71,14 +72,14 @@ class Campaign:
         name: str,
         subject: str,
         body: str,
-        sender: str,
-        sender_id: str,
+        sender_email: str,
+        sender_id: SenderId,
     ) -> None:
         self.id = id
         self._name = name
         self._subject = subject
         self._body = body
-        self._sender = sender
+        self._sender_email = sender_email
         self._status = "DRAFT"
         self._sender_id = sender_id
         self._contact_list_targets = set()
@@ -92,7 +93,7 @@ class Campaign:
             "name": self._name,
             "subject": self._subject,
             "body": self._body,
-            "sender": self._sender,
+            "sender": self._sender_email,
             "schedule_datetime": self._schedule_datetime.isoformat()
             if self._schedule_datetime
             else "",
@@ -134,6 +135,8 @@ class Campaign:
     def calculate_contact_lists_to_send(
         self, daily_send_limit: int, contact_lists: list[ContactList]
     ) -> ContactListsToSend:
+        if daily_send_limit == 0:
+            return ContactListsToSend([], should_reschedule_campaign=True)
         contacts_quantity = 0
         contact_lists_to_send = []
 
@@ -154,11 +157,13 @@ class Campaign:
                         contact_list.id, abs(daily_send_limit - contacts_quantity)
                     )
                 )
-                return ContactListsToSend(contact_lists_to_send, True)
+                return ContactListsToSend(
+                    contact_lists_to_send, should_reschedule_campaign=True
+                )
             contact_lists_to_send.append(
                 ContactListToSend(contact_list.id, contact_list._contacts_quantity)
             )
-        return ContactListsToSend(contact_lists_to_send, False)
+        return ContactListsToSend(contact_lists_to_send, should_reschedule_campaign=False)
 
     def start_sending(self) -> None:
         if not self._is_valid_status_transition(self._status, "SENDING"):
