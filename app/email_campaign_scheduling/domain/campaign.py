@@ -60,7 +60,7 @@ class Campaign:
     _sender: str
     _schedule_datetime: Optional[datetime] = None
     _status: CAMPAIGN_STATUS
-    _user_id: str
+    _sender_id: str
     _contact_list_targets: set[ContactListTarget]
 
     def __init__(
@@ -70,7 +70,7 @@ class Campaign:
         subject: str,
         body: str,
         sender: str,
-        user_id: str,
+        sender_id: str,
     ) -> None:
         self.id = id
         self._name = name
@@ -78,7 +78,7 @@ class Campaign:
         self._body = body
         self._sender = sender
         self._status = "DRAFT"
-        self._user_id = user_id
+        self._sender_id = sender_id
         self._contact_list_targets = set()
 
     def __str__(self) -> str:
@@ -118,7 +118,7 @@ class Campaign:
         if self._status != "DRAFT":
             raise Exception("CANNOT_ADD_CONTACT_LISTS_TO_NON_DRAFT_CAMPAIGN")
         if not all(
-            self._user_id == contact_list._user_id for contact_list in contact_lists
+            self._sender_id == contact_list._user_id for contact_list in contact_lists
         ):
             raise Exception("USER_ID_MISMATCH")
         new_contact_list_targets = {

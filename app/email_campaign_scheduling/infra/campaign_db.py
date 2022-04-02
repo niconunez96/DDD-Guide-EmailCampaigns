@@ -42,7 +42,7 @@ def create_campaign_schema(metadata: MetaData) -> None:
         Column("sender", String(50), key="_sender"),
         Column("schedule_datetime", DateTime(), key="_schedule_datetime"),
         Column("status", String(10), key="_status"),
-        Column("user_id", String(50), key="_user_id"),
+        Column("sender_id", String(50), key="_sender_id"),
     )
     mapper_registry.map_imperatively(ContactListTarget, contact_list_target_table)
     mapper_registry.map_imperatively(

@@ -40,9 +40,9 @@ def dispatch_campaign(
     if not campaign:
         logger.warning(f"Campaign with id {id} not found")
         return
-    sender = _find_sender(campaign._user_id)
+    sender = _find_sender(campaign._sender_id)
     if not sender:
-        logger.warning(f"There is no sender with id {campaign._user_id}")
+        logger.warning(f"There is no sender with id {campaign._sender_id}")
         return
     contact_list_ids = [
         cast(ContactListId, ContactListId.from_string(target.contact_list_id))
