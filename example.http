@@ -7,7 +7,7 @@ Content-Type: application/json
 Accept: application/json
 
 @user_id = {{user.response.body.$.data.id}}
-# GET http://{{host}}/users/5a29678f-d885-49d0-aafd-462ff1797ca9/
+# GET http://{{host}}/users/{{user_id}}/
 
 # Create campaign
 # @name campaign
@@ -51,10 +51,16 @@ POST http://{{host}}/campaigns/{{campaign_id}}/contact_lists/
 Content-Type: application/json
 
 {
-  "contact_list_ids": ["{{contact_list_id}}"]
+  "contact_list_ids": ["{{contact_list_id}}", "609491536a8444328b6f24e7765255f6"]
 }
 
 ## Send campaign now
 POST http://{{host}}/campaigns/{{campaign_id}}/send_now/
 
 ## Schedule campaign
+POST http://{{host}}/campaigns/{{campaign_id}}/schedule/
+Content-Type: application/json
+
+{
+  "schedule_datetime": "2023-01-01 13:00"
+}

@@ -121,7 +121,7 @@ class Campaign:
         if self._status != "DRAFT":
             raise Exception("CANNOT_ADD_CONTACT_LISTS_TO_NON_DRAFT_CAMPAIGN")
         if not all(
-            self._sender_id == contact_list._user_id for contact_list in contact_lists
+            str(self._sender_id) == contact_list._user_id for contact_list in contact_lists
         ):
             raise Exception("USER_ID_MISMATCH")
         new_contact_list_targets = {
