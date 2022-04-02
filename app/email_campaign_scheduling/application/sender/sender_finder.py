@@ -1,6 +1,6 @@
 from typing import Optional
 
-from app.email_campaign_scheduling.domain.sender import Sender, SenderId, SenderResponse
+from app.email_campaign_scheduling.domain.sender import SenderId, SenderResponse
 from app.email_campaign_scheduling.domain.sender_repo import (
     SenderRepo,
     sender_mysql_repo,

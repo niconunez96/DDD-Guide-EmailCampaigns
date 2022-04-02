@@ -26,8 +26,7 @@ def _find_sender(sender_id: str) -> Optional[SenderResponse]:
     if not id:
         logger.warning(f"Sender id is invalid")
         return None
-    sender = find_sender(id)
-    return sender
+    return find_sender(id)
 
 
 def _send_campaign(
@@ -37,7 +36,7 @@ def _send_campaign(
     contact_lists: list[ContactList],
 ) -> None:
     contact_lists_to_send = campaign.calculate_contact_lists_to_send(
-        sender["daily_send_limit"], contact_lists
+        sender["current_limit"], contact_lists
     )
     if not contact_lists_to_send.contact_lists:
         campaign.mark_as_sent()
