@@ -25,10 +25,11 @@ class SendgridEmailSender:
 
     def send_emails(self, message: Message) -> None:
         email = Mail(
-            from_email=message["sender_email"],
+            from_email="nicolas110996@gmail.com",
             subject=message["subject"],
             html_content=message["body"],
         )
+        email.reply_to = message["sender_email"]
         for recipient in message["recipient_emails"]:
             pers = Personalization()
             pers.add_to(Email(recipient))

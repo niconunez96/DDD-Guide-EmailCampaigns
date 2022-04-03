@@ -1,17 +1,17 @@
-@host = localhost:8080
+# @host = localhost:8080
+@host = campaign-service-niconunez96.cloud.okteto.net
 
 ## Create user
 # @name user
 POST http://{{host}}/users/
-Content-Type: application/json
-Accept: application/json
+
 
 @user_id = {{user.response.body.$.data.id}}
 # GET http://{{host}}/users/{{user_id}}/
 
 # Create campaign
 # @name campaign
-POST http://{{host}}/campaigns/
+POST https://{{host}}/campaigns/
 Content-Type: application/json
 
 {
@@ -19,18 +19,18 @@ Content-Type: application/json
   "name": "Campaign 1",
   "subject": "Campaign 1 subject",
   "body": "<h1>Hello world</h1>",
-  "sender": "nicolas110996@gmail.com",
+  "sender": "pepito@gmail.com",
   "user_id": "{{user_id}}"
 }
 
 @campaign_id = {{campaign.response.body.$.data.id}}
 
 # Retrieve campaign
-GET http://{{host}}/campaigns/{{campaign_id}}/
+GET https://{{host}}/campaigns/{{campaign_id}}/
 
 # Create contact list
 # @name contact_list
-POST http://{{host}}/contact_lists/
+POST https://{{host}}/contact_lists/
 Content-Type: application/json
 
 {
@@ -44,18 +44,18 @@ Content-Type: application/json
 @contact_list_id = {{contact_list.response.body.$.data.id}}
 
 ## Retrieve contacts from contact list
-GET http://{{host}}/contact_lists/{{contact_list_id}}/contacts/
+GET https://{{host}}/contact_lists/{{contact_list_id}}/contacts/
 
 ## Add contact list to campaign
-POST http://{{host}}/campaigns/{{campaign_id}}/contact_lists/
+POST https://{{host}}/campaigns/{{campaign_id}}/contact_lists/
 Content-Type: application/json
 
 {
-  "contact_list_ids": ["{{contact_list_id}}", "609491536a8444328b6f24e7765255f6"]
+  "contact_list_ids": ["{{contact_list_id}}"]
 }
 
 ## Send campaign now
-POST http://{{host}}/campaigns/{{campaign_id}}/send_now/
+POST https://{{host}}/campaigns/{{campaign_id}}/send_now/
 
 ## Schedule campaign
 POST http://{{host}}/campaigns/{{campaign_id}}/schedule/

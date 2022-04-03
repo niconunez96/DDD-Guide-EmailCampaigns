@@ -1,5 +1,5 @@
 from datetime import date, datetime, timedelta
-from typing import Literal, TypedDict
+from typing import Literal, Optional, TypedDict
 from app.shared.domain.aggregate import DomainId
 
 
@@ -22,7 +22,7 @@ class Sender:
     id: SenderId
     daily_send_limit: DailySendLimit
     _current_limit: int
-    _last_time_current_limit_was_updated: date
+    _last_time_current_limit_was_updated: Optional[date]
     daily_send_limit_per_plan: dict[MarketingPlan, DailySendLimit] = {
         "REGULAR": 2000,
         "PREMIUM": 4000,
@@ -43,8 +43,10 @@ class Sender:
 
     @property
     def current_limit(self) -> int:
-        if self._last_time_current_limit_was_updated - datetime.now().date() > timedelta(
-            days=1
+        if (
+            self._last_time_current_limit_was_updated
+            and self._last_time_current_limit_was_updated - datetime.now().date()
+            > timedelta(days=1)
         ):
             return self.daily_send_limit
         return self._current_limit

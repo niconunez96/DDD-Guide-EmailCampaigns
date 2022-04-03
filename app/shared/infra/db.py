@@ -1,4 +1,5 @@
 from abc import ABC, abstractproperty
+import os
 from typing import Generic, Optional, Type, TypeVar
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -13,7 +14,12 @@ from app.email_campaign_scheduling.infra.sender_db import (
 from app.marketing.infra.user_db import create_user_table
 
 
-engine = create_engine("mysql+mysqldb://root:39853201@localhost:3306/ddd_sample", echo=True)
+USERNAME = os.getenv("DB_USERNAME", "root")
+PASSWORD = os.getenv("DB_PASSWORD", "secret")
+HOST = os.getenv("DB_HOST", "localhost")
+engine = create_engine(
+    f"mysql+mysqldb://{USERNAME}:{PASSWORD}@{HOST}:3306/ddd_sample"
+)
 metadata = MetaData()
 SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
