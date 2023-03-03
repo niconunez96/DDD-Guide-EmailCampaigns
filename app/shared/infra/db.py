@@ -1,8 +1,9 @@
-from abc import ABC, abstractproperty
 import os
+from abc import ABC, abstractproperty
 from typing import Generic, Optional, Type, TypeVar
+
 from sqlalchemy import MetaData, create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 from app.email_campaign_scheduling.infra.campaign_db import create_campaign_schema
 from app.email_campaign_scheduling.infra.contact_list_db import (
@@ -12,7 +13,6 @@ from app.email_campaign_scheduling.infra.sender_db import (
     create_user_table as create_campaign_user_table,
 )
 from app.marketing.infra.user_db import create_user_table
-
 
 USERNAME = os.getenv("DB_USERNAME", "root")
 PASSWORD = os.getenv("DB_PASSWORD", "secret")

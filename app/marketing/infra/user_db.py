@@ -1,10 +1,10 @@
-from app.shared.infra.sqlalchemy_types import DomainIdObjectType
-from sqlalchemy import Column, MetaData, Table, Enum
+from sqlalchemy import Column, Enum, MetaData, Table
 from sqlalchemy.orm.decl_api import registry
 from sqlalchemy_utils import UUIDType
 
-from ..domain.user import MarketingPlan, User, UserId
+from app.shared.infra.sqlalchemy_types import DomainIdObjectType
 
+from ..domain.user import MarketingPlan, User, UserId
 
 mapper_registry = registry()
 

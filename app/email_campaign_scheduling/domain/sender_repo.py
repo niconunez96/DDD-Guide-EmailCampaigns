@@ -1,6 +1,8 @@
 from typing import Optional, Protocol, Type
-from .sender import Sender, SenderId
+
 from app.shared.infra.db import MySQLRepo
+
+from .sender import Sender, SenderId
 
 
 class SenderRepo(Protocol):

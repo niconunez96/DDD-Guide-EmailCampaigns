@@ -1,10 +1,10 @@
-from app.shared.infra.sqlalchemy_types import DomainIdObjectType
-from sqlalchemy import Column, MetaData, Table, Integer, Date
+from sqlalchemy import Column, Date, Integer, MetaData, Table
 from sqlalchemy.orm.decl_api import registry
 from sqlalchemy_utils import UUIDType
 
-from ..domain.sender import Sender, SenderId
+from app.shared.infra.sqlalchemy_types import DomainIdObjectType
 
+from ..domain.sender import Sender, SenderId
 
 mapper_registry = registry()
 

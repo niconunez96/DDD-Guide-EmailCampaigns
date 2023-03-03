@@ -1,7 +1,7 @@
 from functools import total_ordering
-from typing import Literal, TypedDict
-from app.shared.domain.aggregate import DomainId
+from typing import Literal, Optional, TypedDict
 
+from app.shared.domain.aggregate import DomainId
 
 ContactStatus = Literal["BOUNCED", "DELIVERABLE"]
 
@@ -46,7 +46,7 @@ class ContactList:
     _contacts_quantity: int
 
     def __init__(
-        self, id: ContactListId, user_id: str, name: str, contacts: list[Contact] = None
+        self, id: ContactListId, user_id: str, name: str, contacts: Optional[list[Contact]] = None
     ):
         self.id = id
         self._user_id = user_id

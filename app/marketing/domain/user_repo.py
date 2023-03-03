@@ -1,6 +1,8 @@
 from typing import Optional, Protocol, Type
-from .user import User, UserId
+
 from app.shared.infra.db import MySQLRepo
+
+from .user import User, UserId
 
 
 class UserRepo(Protocol):

@@ -1,7 +1,7 @@
-from typing import Optional
-from uuid import UUID
 from dataclasses import dataclass
 from logging import getLogger
+from typing import Optional
+from uuid import UUID
 
 from app.email_campaign_scheduling.domain.campaign import Campaign, CampaignId
 from app.email_campaign_scheduling.domain.campaign_repo import (

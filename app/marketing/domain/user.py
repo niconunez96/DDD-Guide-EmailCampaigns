@@ -2,9 +2,9 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Literal, cast
 from uuid import UUID, uuid4
+
 from app.shared.domain.aggregate import DomainId
 from app.shared.domain.event_bus import DomainEvent
-
 
 PlanType = Literal["REGULAR", "PREMIUM", "SUPER_SUPER_PREMIUM"]
 
@@ -13,14 +13,11 @@ PlanType = Literal["REGULAR", "PREMIUM", "SUPER_SUPER_PREMIUM"]
 class UserCreated(DomainEvent):
     user_id: str
     _id: UUID = uuid4()
+    name = "USER_CREATED"
 
     @property
     def id(self) -> str:
         return str(self._id)
-
-    @staticmethod
-    def name() -> str:
-        return "USER_CREATED"
 
 
 @dataclass(frozen=True)
@@ -28,14 +25,11 @@ class UserPlanUpgraded(DomainEvent):
     user_id: str
     plan: PlanType
     _id: UUID = uuid4()
+    name = "USER_PLAN_UPGRADED"
 
     @property
     def id(self) -> str:
         return str(self._id)
-
-    @staticmethod
-    def name() -> str:
-        return "USER_PLAN_UPGRADED"
 
 
 @dataclass(frozen=True)
@@ -43,14 +37,11 @@ class UserPlanDowngraded(DomainEvent):
     user_id: str
     plan: PlanType
     _id: UUID = uuid4()
+    name = "USER_PLAN_DOWNGRADED"
 
     @property
     def id(self) -> str:
         return str(self._id)
-
-    @staticmethod
-    def name() -> str:
-        return "USER_PLAN_DOWNGRADED"
 
 
 class MarketingPlan(Enum):

@@ -1,11 +1,13 @@
+from http import HTTPStatus
 from typing import Any, Optional
 from uuid import uuid4
+
 from flask import Response, jsonify, request
-from http import HTTPStatus
 from flask.blueprints import Blueprint
+
 from app.email_campaign_scheduling.application.contact_list import (
-    create_contact_list,
     CreateContactListCommand,
+    create_contact_list,
     find_contacts,
 )
 from app.email_campaign_scheduling.domain.contact_list import ContactListId

@@ -1,6 +1,7 @@
-from app.marketing.domain.user import UserId, User
+from app.marketing.domain.user import User, UserId
 from app.marketing.domain.user_repo import UserRepo
 from app.shared.domain.event_bus import EventBus
+
 from ..domain.user_repo import user_mysql_repo
 
 

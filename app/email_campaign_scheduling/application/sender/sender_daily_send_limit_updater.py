@@ -1,5 +1,8 @@
 from app.email_campaign_scheduling.domain.sender import MarketingPlan, SenderId
-from app.email_campaign_scheduling.domain.sender_repo import SenderRepo, sender_mysql_repo
+from app.email_campaign_scheduling.domain.sender_repo import (
+    SenderRepo,
+    sender_mysql_repo,
+)
 
 
 def update_daily_send_limit(

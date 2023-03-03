@@ -2,7 +2,6 @@ import abc
 from typing import Generic, Optional, Type, TypeVar
 from uuid import UUID, uuid4
 
-
 T = TypeVar("T", bound="DomainId")
 
 
@@ -12,7 +11,7 @@ class DomainId(abc.ABC, Generic[T]):
     def __str__(self) -> str:
         return str(self.value)
 
-    def __init__(self, value: UUID = None) -> None:
+    def __init__(self, value: Optional[UUID] = None) -> None:
         self.value = value or uuid4()
 
     def __eq__(self, __o: object) -> bool:
@@ -26,5 +25,5 @@ class DomainId(abc.ABC, Generic[T]):
         try:
             id = UUID(value)
             return cls(id)
-        except:
+        except Exception:
             return None

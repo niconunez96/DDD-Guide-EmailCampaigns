@@ -4,7 +4,6 @@ from http import HTTPStatus
 
 from flask import Blueprint, Response, jsonify, request
 
-
 sengrid_endpoint = Blueprint("sengrid_endpoint", __name__)
 
 
@@ -14,7 +13,7 @@ logger = logging.getLogger(__name__)
 @sengrid_endpoint.route("/send_example/", methods=["POST"])
 def send() -> tuple[Response, HTTPStatus]:
     from sendgrid import SendGridAPIClient
-    from sendgrid.helpers.mail import Mail, Personalization, CustomArg, Email
+    from sendgrid.helpers.mail import CustomArg, Email, Mail, Personalization
 
     message = Mail(
         from_email="nicolas110996@gmail.com",

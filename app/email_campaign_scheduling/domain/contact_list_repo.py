@@ -1,7 +1,10 @@
 from typing import Optional, Protocol, Type
-from .contact_list import ContactList, ContactListId
+
+from sqlalchemy.orm import joinedload, scoped_session
+
 from app.shared.infra.db import MySQLRepo, SessionFactory
-from sqlalchemy.orm import scoped_session, joinedload
+
+from .contact_list import ContactList, ContactListId
 
 
 class ContactListRepo(Protocol):

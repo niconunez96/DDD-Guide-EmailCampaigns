@@ -1,11 +1,11 @@
-from app.shared.infra.sqlalchemy_types import DomainIdObjectType
-from sqlalchemy import Column, MetaData, String, Table, ForeignKey, Integer
+from sqlalchemy import Column, ForeignKey, Integer, MetaData, String, Table
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.decl_api import registry
 from sqlalchemy_utils import UUIDType
 
-from ..domain.contact_list import Contact, ContactList, ContactListId
+from app.shared.infra.sqlalchemy_types import DomainIdObjectType
 
+from ..domain.contact_list import Contact, ContactList, ContactListId
 
 mapper_registry = registry()
 

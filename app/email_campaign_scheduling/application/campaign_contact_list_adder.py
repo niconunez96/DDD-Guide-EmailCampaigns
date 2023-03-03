@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from app.email_campaign_scheduling.domain.campaign import CampaignId
 from app.email_campaign_scheduling.domain.campaign_repo import (
     CampaignRepo,

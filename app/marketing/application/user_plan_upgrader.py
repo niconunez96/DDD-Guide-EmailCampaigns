@@ -1,7 +1,8 @@
 from typing import NoReturn
 
 from app.shared.domain.event_bus import EventBus
-from ..domain.user import UserId, MarketingPlan
+
+from ..domain.user import MarketingPlan, UserId
 from ..domain.user_repo import UserRepo, user_mysql_repo
 
 

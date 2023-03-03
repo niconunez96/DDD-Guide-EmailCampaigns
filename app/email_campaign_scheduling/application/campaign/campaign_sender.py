@@ -1,10 +1,10 @@
+from app.email_campaign_scheduling.application.campaign_dispatcher import (
+    dispatch_campaign,
+)
 from app.email_campaign_scheduling.domain.campaign import CampaignId
 from app.email_campaign_scheduling.domain.campaign_repo import (
     CampaignRepo,
     campaign_mysql_repo,
-)
-from app.email_campaign_scheduling.application.campaign_dispatcher import (
-    dispatch_campaign,
 )
 
 

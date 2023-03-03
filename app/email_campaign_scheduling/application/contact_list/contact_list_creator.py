@@ -1,5 +1,10 @@
 from dataclasses import dataclass, field
-from app.email_campaign_scheduling.domain.contact_list import Contact, ContactList, ContactListId
+
+from app.email_campaign_scheduling.domain.contact_list import (
+    Contact,
+    ContactList,
+    ContactListId,
+)
 from app.email_campaign_scheduling.domain.contact_list_repo import (
     ContactListRepo,
     contact_list_mysql_repo,

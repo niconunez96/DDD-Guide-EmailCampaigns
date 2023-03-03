@@ -1,9 +1,10 @@
 from logging import getLogger
+
 from app.email_campaign_scheduling.application.contact_list import find_contacts
-from app.email_campaign_scheduling.application.sender.sender_finder import find_sender
 from app.email_campaign_scheduling.application.sender.sender_current_limit_updater import (
     update_sender_current_limit,
 )
+from app.email_campaign_scheduling.application.sender.sender_finder import find_sender
 from app.email_campaign_scheduling.domain.campaign import (
     Campaign,
     CampaignId,
@@ -14,8 +15,8 @@ from app.email_campaign_scheduling.domain.campaign_repo import (
     campaign_mysql_repo,
 )
 from app.email_campaign_scheduling.domain.contact_list_repo import (
-    contact_list_mysql_repo,
     ContactListRepo,
+    contact_list_mysql_repo,
 )
 from app.email_campaign_scheduling.domain.sender import SenderId, SenderResponse
 from app.email_campaign_scheduling.domain.sender_repo import (

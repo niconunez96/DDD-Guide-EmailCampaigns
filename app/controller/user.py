@@ -3,12 +3,12 @@ from http import HTTPStatus
 
 from flask import Blueprint, Response, jsonify, request
 
-from app.marketing.domain.user import UserId, MarketingPlan
 from app.marketing.application import (
     create_user,
-    upgrade_user_plan,
     downgrade_user_plan,
+    upgrade_user_plan,
 )
+from app.marketing.domain.user import MarketingPlan, UserId
 from app.shared.infra.event_bus import in_memory_event_bus
 
 user_endpoint = Blueprint("user", __name__, url_prefix="/users")

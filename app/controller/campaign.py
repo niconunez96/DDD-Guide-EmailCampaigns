@@ -1,11 +1,9 @@
-from datetime import datetime
-from typing import Optional
 import uuid
+from datetime import datetime
 from http import HTTPStatus
+from typing import Optional
 
 from flask import Blueprint, Response, jsonify, request
-
-from app.email_campaign_scheduling.domain.campaign import CampaignId
 
 from app.email_campaign_scheduling.application.campaign.campaign_creator import (
     CreateCampaignCommand,
@@ -19,11 +17,14 @@ from app.email_campaign_scheduling.application.campaign.campaign_scheduler impor
     ScheduleCommand,
     schedule_campaign,
 )
-from app.email_campaign_scheduling.application.campaign_contact_list_adder import (
-    add_contact_lists,
-    AddCampaignToContactListCommand,
+from app.email_campaign_scheduling.application.campaign.campaign_sender import (
+    send_now as send_campaign_now,
 )
-from app.email_campaign_scheduling.application.campaign.campaign_sender import send_now as send_campaign_now
+from app.email_campaign_scheduling.application.campaign_contact_list_adder import (
+    AddCampaignToContactListCommand,
+    add_contact_lists,
+)
+from app.email_campaign_scheduling.domain.campaign import CampaignId
 from app.email_campaign_scheduling.domain.contact_list import ContactListId
 
 campaign_endpoint = Blueprint("campaign", __name__, url_prefix="/campaigns")

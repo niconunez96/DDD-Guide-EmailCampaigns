@@ -1,7 +1,9 @@
 from typing import Optional, Protocol, Type, overload
 
+from sqlalchemy.orm import raiseload, scoped_session
+
 from app.shared.infra.db import MySQLRepo, SessionFactory
-from sqlalchemy.orm import scoped_session, raiseload
+
 from .campaign import Campaign, CampaignId
 
 

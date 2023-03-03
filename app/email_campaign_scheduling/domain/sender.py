@@ -1,7 +1,7 @@
 from datetime import date, datetime, timedelta
 from typing import Literal, Optional, TypedDict
-from app.shared.domain.aggregate import DomainId
 
+from app.shared.domain.aggregate import DomainId
 
 DailySendLimit = Literal[2000, 4000, 6000]
 

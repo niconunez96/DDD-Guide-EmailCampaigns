@@ -1,13 +1,13 @@
-from app.email_campaign_scheduling.domain.contact_list import ContactListId
-from app.email_campaign_scheduling.domain.sender import SenderId
-from app.shared.infra.sqlalchemy_types import DomainIdObjectType
-from sqlalchemy import Column, MetaData, String, Table, DateTime, ForeignKey, Integer
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, MetaData, String, Table
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm.decl_api import registry
 from sqlalchemy_utils import UUIDType
 
-from ..domain.campaign import Campaign, CampaignId, ContactListTarget
+from app.email_campaign_scheduling.domain.contact_list import ContactListId
+from app.email_campaign_scheduling.domain.sender import SenderId
+from app.shared.infra.sqlalchemy_types import DomainIdObjectType
 
+from ..domain.campaign import Campaign, CampaignId, ContactListTarget
 
 mapper_registry = registry()
 

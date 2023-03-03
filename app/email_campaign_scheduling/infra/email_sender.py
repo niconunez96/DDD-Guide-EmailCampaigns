@@ -1,8 +1,9 @@
-from logging import getLogger
 import os
+from logging import getLogger
 from typing import Iterator, Protocol, TypedDict
+
 from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, Personalization, CustomArg, Email
+from sendgrid.helpers.mail import CustomArg, Email, Mail, Personalization
 
 
 class Message(TypedDict):
