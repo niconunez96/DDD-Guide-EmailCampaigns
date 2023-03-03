@@ -1,5 +1,3 @@
-from typing import NoReturn
-
 from app.shared.domain.event_bus import EventBus
 
 from ..domain.user import MarketingPlan, UserId

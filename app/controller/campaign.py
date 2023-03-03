@@ -65,7 +65,7 @@ def schedule(id: str) -> tuple[Response, HTTPStatus]:
                 datetime.strptime(data["schedule_datetime"], "%Y-%m-%d %H:%M"),
             ),
         )
-    except:
+    except Exception:
         return jsonify({"error": "NOT_FOUND"}), HTTPStatus.NOT_FOUND
     return jsonify({}), HTTPStatus.ACCEPTED
 

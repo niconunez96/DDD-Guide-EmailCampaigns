@@ -1,4 +1,4 @@
-from typing import Optional, Protocol, Type, overload
+from typing import Optional, Protocol, Type
 
 from sqlalchemy.orm import raiseload, scoped_session
 
